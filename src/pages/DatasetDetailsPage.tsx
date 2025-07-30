@@ -1,0 +1,530 @@
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { 
+  Download, 
+  Share2, 
+  Star, 
+  Calendar, 
+  Tag, 
+  FileText, 
+  Globe, 
+  PlusCircle,
+  CheckCircle, 
+  AlertCircle,
+  Users,
+  ShieldCheck,
+  Play,
+  RefreshCw,
+  Database
+} from 'lucide-react';
+import { useUser } from '../context/UserContext';
+import { useSampleData } from '../hooks/useSampleData';
+import { DataVisualizationPreview } from '../components/charts/DataVisualizationPreview';
+import { DataSummaryCard } from '../components/datasets/DataSummaryCard';
+import { mockDatasets } from '../data/mockData';
+import { Dataset, PricingModel } from '../types/dataset';
+import { formatCurrency, formatDate, formatNumber } from '../utils/formatters';
+
+const DatasetDetailsPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const [dataset, setDataset] = useState<Dataset | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [requestSent, setRequestSent] = useState(false);
+  
+  // Use the new hook to fetch sample data from Databricks
+  const { 
+    data: sampleData, 
+    loading: sampleLoading, 
+    error: sampleError, 
+    refetch: refetchSampleData 
+  } = useSampleData(id || '', !!dataset?.sampleAvailable);
+  
+  // Check if user has access to this dataset
+  // This should match the logic from MyDataPage for accessed datasets
+  const userHasAccess = dataset && (
+    // User owns the dataset
+    dataset.provider.name === user?.organization ||
+    // User has been granted access (simulate with dataset IDs)
+    ['1', '2', '5', '8', '12', '15'].includes(dataset.id)
+  );
+  
+  useEffect(() => {
+    // Simulate API call
+    setTimeout(() => {
+      const foundDataset = mockDatasets.find(d => d.id === id);
+      if (foundDataset) {
+        setDataset(foundDataset);
+      }
+      setLoading(false);
+    }, 500);
+  }, [id]);
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-700"></div>
+      </div>
+    );
+  }
+  
+  if (!dataset) {
+    return (
+      <div className="text-center py-20">
+        <AlertCircle className="h-16 w-16 text-error-500 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold text-neutral-800 mb-2">Dataset Not Found</h2>
+        <p className="text-neutral-600 mb-6">The dataset you're looking for doesn't exist or has been removed.</p>
+        <button 
+          onClick={() => navigate('/marketplace')}
+          className="px-6 py-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 transition-colors"
+        >
+          Return to Marketplace
+        </button>
+      </div>
+    );
+  }
+  
+  const isPaid = dataset.pricingModel !== PricingModel.FREE;
+  const priceDisplay = isPaid && dataset.price 
+    ? formatCurrency(dataset.price, dataset.currency) 
+    : 'Free';
+  
+  const handleRequestAccess = () => {
+    // In a real app, this would send an access request
+    setRequestSent(true);
+  };
+  
+  const handleExploreDataset = () => {
+    // Open Databricks workspace in a new tab
+    window.open('https://dbc-913550aa-14d5.cloud.databricks.com/', '_blank');
+  };
+  
+  return (
+    <div className="animate-fade-in">
+      <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
+        <div>
+          <div className="flex items-center mb-2">
+            <button 
+              onClick={() => navigate('/marketplace')}
+              className="text-neutral-500 hover:text-neutral-700"
+            >
+              Marketplace
+            </button>
+            <span className="mx-2 text-neutral-400">/</span>
+            <span className="text-neutral-800">{dataset.category}</span>
+          </div>
+          <h1 className="text-2xl font-bold text-neutral-900">{dataset.title}</h1>
+        </div>
+        
+        <div className="flex space-x-3">
+          <button className="px-3 py-2 border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 flex items-center transition-colors">
+            <Share2 className="h-4 w-4 mr-1" />
+            Share
+          </button>
+          
+          {userHasAccess ? (
+            <button 
+              onClick={handleExploreDataset}
+              className="px-4 py-2 bg-secondary-600 text-white rounded-md hover:bg-secondary-700 flex items-center transition-colors"
+            >
+              <Play className="h-4 w-4 mr-2" />
+              Explore Dataset
+            </button>
+          ) : dataset.pricingModel === PricingModel.FREE ? (
+            <button className="px-4 py-2 bg-success-600 text-white rounded-md hover:bg-success-700 flex items-center transition-colors">
+              <Download className="h-4 w-4 mr-2" />
+              Download
+            </button>
+          ) : requestSent ? (
+            <button 
+              disabled
+              className="px-4 py-2 bg-neutral-500 text-white rounded-md flex items-center opacity-75"
+            >
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Request Sent
+            </button>
+          ) : (
+            <button 
+              onClick={handleRequestAccess}
+              className="px-4 py-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 flex items-center transition-colors"
+            >
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Request Access
+            </button>
+          )}
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main content */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Dataset preview image */}
+          {dataset.previewImage && (
+            <div className="rounded-lg overflow-hidden border border-neutral-200 shadow-sm">
+              <img 
+                src={dataset.previewImage} 
+                alt={dataset.title} 
+                className="w-full h-64 object-cover"
+              />
+            </div>
+          )}
+          
+          {/* Dataset description */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
+            <h2 className="text-xl font-semibold mb-4">About this dataset</h2>
+            <p className="text-neutral-700 mb-6 leading-relaxed">
+              {dataset.description}
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-sm uppercase text-neutral-500 font-medium mb-2">Data details</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <Calendar className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
+                    <div>
+                      <p className="text-neutral-900 font-medium">Time Range</p>
+                      <p className="text-neutral-600 text-sm">
+                        {formatDate(dataset.timeRange.from)} - {
+                          dataset.timeRange.to 
+                            ? formatDate(dataset.timeRange.to)
+                            : 'Present'
+                        }
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <FileText className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
+                    <div>
+                      <p className="text-neutral-900 font-medium">Available Formats</p>
+                      <p className="text-neutral-600 text-sm">
+                        {dataset.formats.join(', ')}
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <Tag className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
+                    <div>
+                      <p className="text-neutral-900 font-medium">Tags</p>
+                      <div className="flex flex-wrap gap-1.5 mt-1">
+                        {dataset.tags.map((tag, index) => (
+                          <span 
+                            key={index}
+                            className="text-xs bg-neutral-100 text-neutral-700 px-2 py-1 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="text-sm uppercase text-neutral-500 font-medium mb-2">Coverage</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <Globe className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
+                    <div>
+                      <p className="text-neutral-900 font-medium">Geographic Coverage</p>
+                      <p className="text-neutral-600 text-sm">
+                        {dataset.geographicCoverage.join(', ')}
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <Users className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
+                    <div>
+                      <p className="text-neutral-900 font-medium">Usage Statistics</p>
+                      <p className="text-neutral-600 text-sm">
+                        Downloaded {formatNumber(dataset.downloadCount)} times
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <ShieldCheck className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
+                    <div>
+                      <p className="text-neutral-900 font-medium">Quality Score</p>
+                      <div className="flex items-center">
+                        <div className="w-full bg-neutral-200 rounded-full h-2.5 mr-2 mt-1">
+                          <div 
+                            className="bg-success-500 h-2.5 rounded-full" 
+                            style={{ width: `${dataset.qualityScore}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm font-medium text-neutral-700">{dataset.qualityScore}%</span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          {/* Sample data section with Databricks integration */}
+          {dataset.sampleAvailable && (
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center space-x-3">
+                  <h2 className="text-xl font-semibold">Live Data Preview</h2>
+                  <div className="flex items-center space-x-2">
+                    <Database className="w-4 h-4 text-primary-600" />
+                    <span className="text-sm text-primary-600 font-medium">Databricks</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button 
+                    onClick={refetchSampleData}
+                    disabled={sampleLoading}
+                    className="flex items-center space-x-2 text-sm text-primary-700 hover:text-primary-800 font-medium disabled:opacity-50"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${sampleLoading ? 'animate-spin' : ''}`} />
+                    <span>Refresh</span>
+                  </button>
+                  <button className="text-sm text-primary-700 hover:text-primary-800 font-medium">
+                    Download Sample
+                  </button>
+                </div>
+              </div>
+              
+
+              
+              <div className="border border-neutral-200 rounded-lg overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-neutral-200">
+                    <thead className="bg-neutral-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                          Date
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                          Airport
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                          Airline
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                          Passengers
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                          Load Factor
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-neutral-200">
+                      {sampleLoading ? (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-8 text-center">
+                            <div className="flex items-center justify-center space-x-2">
+                              <RefreshCw className="w-5 h-5 animate-spin text-primary-600" />
+                              <span className="text-neutral-600">Loading data...</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : sampleData.length > 0 ? (
+                        sampleData.map((row, index) => (
+                          <tr key={index} className="hover:bg-neutral-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-700">
+                              {row.date}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-700">
+                              {row.airport}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-700">
+                              {row.airline}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-700">
+                              {formatNumber(row.passengers)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-700">
+                              {row.load_factor}%
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-8 text-center text-neutral-500">
+                            No sample data available
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div className="mt-3 flex justify-between items-center text-sm">
+                <p className="text-neutral-500 italic">
+                  Live data from backend API
+                </p>
+                <p className="text-neutral-400">
+                  Showing {sampleData.length} recent records
+                </p>
+              </div>
+            </div>
+          )}
+          
+          {/* Dataset summary for users with access */}
+          {!!userHasAccess && (
+            <DataSummaryCard 
+              data={sampleData} 
+              loading={sampleLoading}
+            />
+          )}
+          
+          {/* Data visualizations with access control */}
+          <DataVisualizationPreview
+            data={sampleData}
+            dataset={dataset}
+            loading={sampleLoading}
+            userHasAccess={!!userHasAccess}
+            onRequestAccess={handleRequestAccess}
+          />
+        </div>
+        
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Pricing card */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200 sticky top-24">
+            {userHasAccess ? (
+              <div className="mb-4 p-3 bg-secondary-50 border border-secondary-200 rounded-lg">
+                <div className="flex items-center text-secondary-800">
+                  <CheckCircle className="h-5 w-5 mr-2" />
+                  <span className="font-medium">Access Granted</span>
+                </div>
+                <p className="text-sm text-secondary-600 mt-1">You have full access to this dataset</p>
+              </div>
+            ) : (
+              <div className="text-2xl font-bold mb-2">
+                {priceDisplay}
+                {dataset.pricingModel === PricingModel.SUBSCRIPTION && (
+                  <span className="text-base font-normal text-neutral-500"> / month</span>
+                )}
+              </div>
+            )}
+            
+            <div className="flex items-center mb-6">
+              <div className="flex items-center">
+                <Star className="h-4 w-4 text-warning-500" />
+                <Star className="h-4 w-4 text-warning-500" />
+                <Star className="h-4 w-4 text-warning-500" />
+                <Star className="h-4 w-4 text-warning-500" />
+                <Star className="h-4 w-4 text-warning-500 opacity-50" />
+              </div>
+              <span className="text-sm text-neutral-700 ml-2">
+                {dataset.rating} ({dataset.ratingsCount} ratings)
+              </span>
+            </div>
+            
+            {userHasAccess ? (
+              <button 
+                onClick={handleExploreDataset}
+                className="w-full py-3 bg-secondary-600 text-white rounded-md hover:bg-secondary-700 flex items-center justify-center transition-colors mb-4"
+              >
+                <Play className="h-5 w-5 mr-2" />
+                Explore Dataset
+              </button>
+            ) : dataset.pricingModel === PricingModel.FREE ? (
+              <button className="w-full py-3 bg-success-600 text-white rounded-md hover:bg-success-700 flex items-center justify-center transition-colors mb-4">
+                <Download className="h-5 w-5 mr-2" />
+                Download Now
+              </button>
+            ) : requestSent ? (
+              <button 
+                disabled
+                className="w-full py-3 bg-neutral-500 text-white rounded-md flex items-center justify-center opacity-75 mb-4"
+              >
+                <CheckCircle className="h-5 w-5 mr-2" />
+                Request Sent
+              </button>
+            ) : (
+              <button 
+                onClick={handleRequestAccess}
+                className="w-full py-3 bg-primary-700 text-white rounded-md hover:bg-primary-800 flex items-center justify-center transition-colors mb-4"
+              >
+                <PlusCircle className="h-5 w-5 mr-2" />
+                Request Access
+              </button>
+            )}
+            
+            {dataset.sampleAvailable && (
+              <button className="w-full py-2.5 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50 transition-colors">
+                Download Sample
+              </button>
+            )}
+            
+            <div className="mt-6 pt-6 border-t border-neutral-200">
+              <h3 className="font-semibold mb-4">Dataset Details</h3>
+              <ul className="space-y-3">
+                <li className="flex justify-between">
+                  <span className="text-neutral-500">Provider:</span>
+                  <span className="font-medium text-neutral-900">
+                    {dataset.provider.name} 
+                    {dataset.provider.verified && (
+                      <CheckCircle className="inline-block h-3.5 w-3.5 ml-1 text-success-600" />
+                    )}
+                  </span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-neutral-500">Last Updated:</span>
+                  <span className="font-medium text-neutral-900">
+                    {formatDate(dataset.lastUpdated)}
+                  </span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-neutral-500">Frequency:</span>
+                  <span className="font-medium text-neutral-900">{dataset.frequency}</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-neutral-500">Category:</span>
+                  <span className="font-medium text-neutral-900">{dataset.category}</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-neutral-500">Access Level:</span>
+                  <span className="font-medium text-neutral-900">{dataset.accessLevel}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          {/* Similar datasets */}
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
+            <h3 className="font-semibold mb-4">Similar Datasets</h3>
+            <ul className="space-y-4">
+              {mockDatasets
+                .filter(d => d.category === dataset.category && d.id !== dataset.id)
+                .slice(0, 3)
+                .map((relatedDataset) => (
+                  <li key={relatedDataset.id} className="border-b border-neutral-200 pb-3 last:border-0 last:pb-0">
+                    <a 
+                      href={`/datasets/${relatedDataset.id}`}
+                      className="text-sm font-medium text-neutral-900 hover:text-primary-700 transition-colors"
+                    >
+                      {relatedDataset.title}
+                    </a>
+                    <div className="flex justify-between items-center mt-1">
+                      <div className="flex items-center text-xs text-neutral-500">
+                        <Star className="h-3 w-3 text-warning-500 mr-1" />
+                        <span>{relatedDataset.rating}</span>
+                        <span className="mx-2">•</span>
+                        <span>{relatedDataset.frequency}</span>
+                      </div>
+                      <span className="text-xs font-medium text-primary-700">
+                        {relatedDataset.pricingModel === PricingModel.FREE 
+                          ? 'Free' 
+                          : 'Paid'}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DatasetDetailsPage;

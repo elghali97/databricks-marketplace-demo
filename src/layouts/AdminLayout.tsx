@@ -1,0 +1,30 @@
+import { Outlet } from 'react-router-dom';
+import AdminHeader from '../components/layout/AdminHeader';
+import AdminSidebar from '../components/layout/AdminSidebar';
+import Footer from '../components/layout/Footer';
+import { useState } from 'react';
+
+const AdminLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50 flex flex-col">
+      <AdminHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <div className="flex flex-1">
+        <AdminSidebar 
+          isOpen={sidebarOpen} 
+          onClose={() => setSidebarOpen(false)}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+        />
+        <main className="flex-1 p-6 pt-24 lg:ml-80 transition-all duration-300">
+          <div className="container mx-auto max-w-7xl">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+      <Footer withSidebar={true} />
+    </div>
+  );
+};
+
+export default AdminLayout;
