@@ -8,7 +8,7 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-databricks-oat-light via-white to-databricks-oat-medium flex flex-col">
       <AdminHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex flex-1">
         <AdminSidebar 

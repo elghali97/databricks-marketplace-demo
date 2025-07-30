@@ -14,10 +14,10 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col space-y-2">
-        <h1 className="text-2xl font-bold text-neutral-900">
+        <h1 className="text-2xl font-bold text-databricks-navy-800">
           Welcome back, {user?.name}
         </h1>
-        <p className="text-neutral-600">
+        <p className="text-databricks-navy-600">
           {isProvider 
             ? 'Manage your travel datasets and track your analytics'
             : 'Explore the latest travel and hospitality data from Databricks'
@@ -74,10 +74,10 @@ const Dashboard = () => {
       {/* Featured datasets section */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-neutral-900">Featured Travel Datasets</h2>
+          <h2 className="text-xl font-semibold text-databricks-navy-800">Featured Travel Datasets</h2>
           <a 
             href="/marketplace" 
-            className="text-sm font-medium text-primary-700 hover:text-primary-800 transition-colors"
+            className="text-sm font-medium text-databricks-lava-600 hover:text-databricks-lava-700 transition-colors"
           >
             View all
           </a>
@@ -92,21 +92,21 @@ const Dashboard = () => {
       
       {/* Trending categories section */}
       <div>
-        <h2 className="text-xl font-semibold text-neutral-900 mb-4">Trending Travel Data Categories</h2>
+        <h2 className="text-xl font-semibold text-databricks-navy-800 mb-4">Trending Travel Data Categories</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {analyticsData.topCategories.slice(0, 4).map((category, index) => (
             <a
               key={index}
               href={`/marketplace?category=${category.name.toLowerCase().replace(/ /g, '-')}`}
-              className="block p-4 bg-white rounded-lg shadow-md border border-neutral-200 hover:shadow-lg transition-shadow"
+              className="block p-4 bg-white rounded-lg shadow-card border border-databricks-oat-medium hover:shadow-databricks transition-all duration-300"
             >
-              <h3 className="font-medium text-neutral-900 mb-2">{category.name}</h3>
-              <p className="text-sm text-neutral-600">
+              <h3 className="font-medium text-databricks-navy-800 mb-2">{category.name}</h3>
+              <p className="text-sm text-databricks-navy-600">
                 {category.value} datasets
               </p>
-              <div className="mt-2 w-full bg-neutral-100 rounded-full h-1.5">
+              <div className="mt-2 w-full bg-databricks-oat-medium rounded-full h-1.5">
                 <div 
-                  className="bg-primary-600 h-1.5 rounded-full" 
+                  className="bg-databricks-lava-600 h-1.5 rounded-full transition-all duration-500" 
                   style={{ width: `${(category.value / analyticsData.topCategories[0].value) * 100}%` }}
                 ></div>
               </div>

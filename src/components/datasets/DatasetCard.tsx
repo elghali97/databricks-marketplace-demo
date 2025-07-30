@@ -70,7 +70,7 @@ export const DatasetCard = ({ dataset, featured = false }: DatasetCardProps) => 
   return (
     <div 
       className={cn(
-        "bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-neutral-200",
+        "bg-white rounded-lg shadow-card overflow-hidden transition-all duration-300 hover:shadow-databricks border border-databricks-oat-medium",
         featured && "md:col-span-2 lg:flex"
       )}
     >
@@ -98,43 +98,45 @@ export const DatasetCard = ({ dataset, featured = false }: DatasetCardProps) => 
             </span>
             
             {verified && (
-              <span className="ml-2 text-xs font-medium px-2 py-1 rounded-full bg-success-50 text-success-700 flex items-center inline-flex">
+              <span className="ml-2 text-xs font-medium px-2 py-1 rounded-full bg-success-100 text-success-700 flex items-center inline-flex">
                 <Check className="w-3 h-3 mr-1" />
                 Verified
               </span>
             )}
           </div>
           
-          <span className={`text-sm font-medium px-2 py-1 rounded-full ${ownershipTag.icon ? 'flex items-center' : ''} ${ownershipTag.className}`}>
+          <span className={`text-sm font-medium px-2 py-1 rounded-full ${ownershipTag.icon ? 'flex items-center' : ''} ${
+            ownershipTag.className.includes('primary') ? 'text-databricks-lava-700 bg-databricks-lava-50' : ownershipTag.className
+          }`}>
             {ownershipTag.icon}
             {ownershipTag.label}
           </span>
         </div>
         
         <Link to={`/datasets/${id}`}>
-          <h3 className="text-lg font-semibold text-neutral-900 hover:text-primary-700 transition-colors mb-2">
+          <h3 className="text-lg font-semibold text-databricks-navy-800 hover:text-databricks-lava-600 transition-colors mb-2">
             {title}
           </h3>
         </Link>
         
-        <p className="text-neutral-600 text-sm mb-4 line-clamp-2">
+        <p className="text-databricks-navy-600 text-sm mb-4 line-clamp-2">
           {description}
         </p>
         
-        <div className="flex items-center text-sm text-neutral-500 mb-4">
+        <div className="flex items-center text-sm text-databricks-navy-500 mb-4">
           <div className="flex items-center">
             <Star className="w-4 h-4 text-warning-500 mr-1" />
-            <span className="font-medium text-neutral-700">{rating}</span>
-            <span className="mx-1 text-neutral-400">({ratingsCount})</span>
+            <span className="font-medium text-databricks-navy-700">{rating}</span>
+            <span className="mx-1 text-databricks-navy-400">({ratingsCount})</span>
           </div>
           
           <div className="flex items-center ml-4">
-            <Download className="w-4 h-4 text-neutral-400 mr-1" />
+            <Download className="w-4 h-4 text-databricks-navy-400 mr-1" />
             <span>{formatNumber(downloadCount)}</span>
           </div>
           
           <div className="flex items-center ml-4">
-            <Clock className="w-4 h-4 text-neutral-400 mr-1" />
+            <Clock className="w-4 h-4 text-databricks-navy-400 mr-1" />
             <span>{formatDate(lastUpdated, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
         </div>
@@ -165,15 +167,15 @@ export const DatasetCard = ({ dataset, featured = false }: DatasetCardProps) => 
         </div>
         
         {featured && (
-          <div className="mt-4 pt-4 border-t border-neutral-200 flex justify-between">
+          <div className="mt-4 pt-4 border-t border-databricks-oat-medium flex justify-between">
             <Link 
               to={`/datasets/${id}`}
-              className="text-sm font-medium text-primary-700 hover:text-primary-800 transition-colors"
+              className="text-sm font-medium text-databricks-lava-600 hover:text-databricks-lava-700 transition-colors"
             >
               View Details
             </Link>
             
-            <button className="text-sm font-medium text-secondary-600 hover:text-secondary-700 transition-colors">
+            <button className="text-sm font-medium text-databricks-navy-600 hover:text-databricks-navy-700 transition-colors">
               Request Sample
             </button>
           </div>

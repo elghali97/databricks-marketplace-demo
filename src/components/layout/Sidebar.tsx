@@ -129,7 +129,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       {/* Sidebar */}
       <aside 
         className={cn(
-          "fixed top-0 left-0 z-40 h-screen w-80 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:translate-x-0 border-r border-neutral-100",
+          "fixed top-0 left-0 z-40 h-screen w-80 bg-white shadow-databricks-navy transition-transform duration-300 ease-in-out lg:translate-x-0 border-r border-databricks-oat-medium",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -137,22 +137,36 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           {/* Close button for mobile */}
           <button 
             onClick={onClose}
-            className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-neutral-100 text-neutral-500 transition-colors"
+            className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-databricks-oat-medium text-databricks-navy-500 transition-colors"
             aria-label="Close sidebar"
           >
             <X className="h-5 w-5" />
           </button>
           
           {/* Logo section */}
-          <div className="px-6 py-6 border-b border-neutral-100">
+          <div className="px-6 py-6 border-b border-databricks-oat-medium">
             <div className="flex items-center justify-between">
               <Link to="/" className="flex items-center space-x-3">
                 <div className="flex items-center">
-                  <img 
-                    src={logoImage} 
-                    alt="Databricks Travel Data" 
-                    className="h-16 w-auto object-contain"
-                  />
+                  <div className="flex items-center space-x-3">
+                    {/* Databricks Logo Mark */}
+                    <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-databricks-lava-600 to-databricks-lava-700 rounded-xl shadow-databricks">
+                      <div className="grid grid-cols-2 gap-0.5">
+                        <div className="w-2 h-2 bg-white rounded-sm"></div>
+                        <div className="w-2 h-2 bg-white/80 rounded-sm"></div>
+                        <div className="w-2 h-2 bg-white/80 rounded-sm"></div>
+                        <div className="w-2 h-2 bg-white rounded-sm"></div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-xl tracking-tight text-databricks-navy-800">
+                        databricks
+                      </span>
+                      <span className="text-sm font-medium text-databricks-lava-600 -mt-1">
+                        Travel Data
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </Link>
             </div>
@@ -162,7 +176,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div className="flex-1 overflow-y-auto px-4 py-6 space-y-8">
             {/* Main Navigation */}
             <div>
-              <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-4 px-4">
+              <h2 className="text-xs font-semibold text-databricks-navy-500 uppercase tracking-wider mb-4 px-4">
                 Main Navigation
               </h2>
               <nav className="space-y-2">
@@ -185,7 +199,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             {/* Travel Data Categories */}
             <div>
               <div className="flex items-center justify-between mb-4 px-4">
-                <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                <h2 className="text-xs font-semibold text-databricks-navy-500 uppercase tracking-wider">
                   Travel Intelligence
                 </h2>
               </div>
@@ -203,7 +217,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
             {/* Support & Settings */}
             <div>
-              <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-4 px-4">
+              <h2 className="text-xs font-semibold text-databricks-navy-500 uppercase tracking-wider mb-4 px-4">
                 Account & Support
               </h2>
               <nav className="space-y-2">
@@ -220,10 +234,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           
           {/* Admin Panel Access */}
           {isAdmin && (
-            <div className="p-4 border-t border-neutral-100 bg-gradient-to-r from-neutral-50 to-neutral-100">
+            <div className="p-4 border-t border-databricks-oat-medium bg-gradient-to-r from-databricks-oat-light to-databricks-oat-medium">
               <Link 
                 to="/admin" 
-                className="flex items-center justify-between p-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all duration-200 shadow-lg"
+                className="flex items-center justify-between p-4 bg-gradient-to-r from-databricks-lava-600 to-databricks-lava-700 text-white rounded-xl hover:from-databricks-lava-700 hover:to-databricks-lava-800 transition-all duration-200 shadow-databricks"
               >
                 <div className="flex items-center">
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/20">
@@ -240,12 +254,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           )}
 
           {/* Databricks Branding Footer */}
-          <div className="p-4 border-t border-neutral-100 bg-neutral-50">
+          <div className="p-4 border-t border-databricks-oat-medium bg-databricks-oat-light">
             <div className="text-center">
-              <p className="text-xs text-neutral-500">
-                Powered by <span className="font-semibold text-primary-700">Databricks</span>
+              <p className="text-xs text-databricks-navy-600">
+                Powered by <span className="font-bold text-databricks-lava-600">Databricks</span>
               </p>
-              <p className="text-xs text-neutral-400 mt-1">
+              <p className="text-xs text-databricks-navy-500 mt-1">
                 Travel Technology Solutions
               </p>
             </div>

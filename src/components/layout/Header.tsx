@@ -75,19 +75,19 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 lg:left-80 bg-white shadow-md z-30">
+    <header className="fixed top-0 left-0 right-0 lg:left-80 bg-white/95 backdrop-blur-sm border-b border-databricks-oat-medium shadow-databricks-navy z-30">
       <div className="flex items-center justify-between h-16 px-4 lg:px-6">
         {/* Left side - Menu button only */}
         <div className="flex items-center">
           <button
             onClick={onMenuClick}
-            className="lg:hidden mr-4 p-2 rounded-md hover:bg-neutral-100 transition-colors"
+            className="lg:hidden mr-4 p-2 rounded-md hover:bg-databricks-oat-medium transition-colors"
             aria-label="Toggle menu"
           >
             <Menu className="h-5 w-5" />
           </button>
           <div className="block">
-            <h1 className="text-lg font-semibold text-neutral-800">Travel Data Marketplace</h1>
+            <h1 className="text-lg font-semibold text-databricks-navy-800">Databricks Travel Data Marketplace</h1>
           </div>
         </div>
 
@@ -98,12 +98,12 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           <div className="relative">
             <button 
               onClick={() => setNotificationMenuOpen(!notificationMenuOpen)}
-              className="notification-button p-2 rounded-md hover:bg-neutral-100 transition-colors relative"
+              className="notification-button p-2 rounded-md hover:bg-databricks-oat-medium transition-colors relative"
               aria-label="Notifications"
             >
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-error-500"></span>
+                <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-databricks-lava-600 animate-pulse"></span>
               )}
             </button>
 
@@ -111,13 +111,13 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               <div className="notification-menu origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 animate-fade-in z-50">
                 <div className="py-1" role="menu" aria-orientation="vertical">
                   {/* Header */}
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-200">
-                    <h3 className="text-sm font-semibold text-neutral-900">Notifications</h3>
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-databricks-oat-medium">
+                    <h3 className="text-sm font-semibold text-databricks-navy-800">Notifications</h3>
                     <button
                       onClick={() => setNotificationMenuOpen(false)}
-                      className="p-1 rounded-md hover:bg-neutral-100 transition-colors"
+                      className="p-1 rounded-md hover:bg-databricks-oat-medium transition-colors"
                     >
-                      <X className="h-4 w-4 text-neutral-500" />
+                      <X className="h-4 w-4 text-databricks-navy-600" />
                     </button>
                   </div>
 
@@ -129,26 +129,26 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                         <div
                           key={notification.id}
                           className={`px-4 py-3 hover:bg-neutral-50 transition-colors border-l-4 ${
-                            notification.read ? 'border-transparent' : 'border-primary-500 bg-primary-50/30'
+                            notification.read ? 'border-transparent' : 'border-databricks-lava-600 bg-databricks-lava-50'
                           }`}
                         >
                           <div className="flex items-start space-x-3">
                             <div className={`p-2 rounded-full ${
-                              notification.type === 'access_granted' ? 'bg-green-100' :
-                              notification.type === 'request_pending' ? 'bg-amber-100' :
-                              'bg-blue-100'
+                              notification.type === 'access_granted' ? 'bg-success-100' :
+                              notification.type === 'request_pending' ? 'bg-warning-100' :
+                              'bg-databricks-lava-100'
                             }`}>
                               <IconComponent className={`h-4 w-4 ${notification.color}`} />
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-neutral-900">{notification.title}</p>
+                                <p className="text-sm font-medium text-databricks-navy-800">{notification.title}</p>
                                 {!notification.read && (
-                                  <span className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>
+                                  <span className="w-2 h-2 bg-databricks-lava-600 rounded-full flex-shrink-0"></span>
                                 )}
                               </div>
-                              <p className="text-sm text-neutral-600 mt-1">{notification.message}</p>
-                              <p className="text-xs text-neutral-500 mt-1">{notification.time}</p>
+                              <p className="text-sm text-databricks-navy-600 mt-1">{notification.message}</p>
+                              <p className="text-xs text-databricks-navy-500 mt-1">{notification.time}</p>
                             </div>
                           </div>
                         </div>
@@ -157,8 +157,8 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                   </div>
 
                   {/* Footer */}
-                  <div className="border-t border-neutral-200 px-4 py-3">
-                    <button className="w-full text-center text-sm text-primary-600 hover:text-primary-700 font-medium">
+                  <div className="border-t border-databricks-oat-medium px-4 py-3">
+                    <button className="w-full text-center text-sm text-databricks-lava-600 hover:text-databricks-lava-700 font-medium">
                       View All Notifications
                     </button>
                   </div>
@@ -170,7 +170,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           <div className="relative ml-3">
             <button 
               onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="user-button flex items-center space-x-2 p-2 rounded-md hover:bg-neutral-100 transition-colors"
+              className="user-button flex items-center space-x-2 p-2 rounded-md hover:bg-databricks-oat-medium transition-colors"
               aria-expanded={userMenuOpen}
             >
               {user?.avatar ? (
@@ -180,7 +180,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                   className="h-8 w-8 rounded-full object-cover"
                 />
               ) : (
-                <div className="h-8 w-8 rounded-full bg-primary-200 flex items-center justify-center text-primary-700 font-medium">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-databricks-lava-500 to-databricks-lava-600 flex items-center justify-center text-white font-medium">
                   {user?.name.charAt(0)}
                 </div>
               )}
@@ -194,7 +194,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                 <div className="py-1" role="menu" aria-orientation="vertical">
                   <Link 
                     to="/profile"
-                    className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100"
+                    className="flex items-center px-4 py-2 text-sm text-databricks-navy-700 hover:bg-databricks-oat-light"
                     onClick={() => setUserMenuOpen(false)}
                   >
                     <User className="mr-2 h-4 w-4" />
@@ -205,7 +205,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                       logout();
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2 text-sm text-error-600 hover:bg-neutral-100"
+                    className="w-full text-left px-4 py-2 text-sm text-error-600 hover:bg-databricks-oat-light"
                   >
                     Sign out
                   </button>

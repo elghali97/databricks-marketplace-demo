@@ -23,38 +23,42 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-databricks-oat-light to-databricks-oat-medium p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-xl shadow-databricks-navy overflow-hidden border border-databricks-oat-medium">
           <div className="p-8">
             <div className="text-center mb-8">
               <div className="flex justify-center items-center space-x-3">
-                <div className="relative">
-                  <Plane className="h-10 w-10 text-primary-700 transform rotate-45" />
-                  <Database className="h-5 w-5 text-secondary-600 absolute -bottom-1 -right-1" />
+                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-databricks-lava-600 to-databricks-lava-700 rounded-2xl shadow-databricks">
+                  <div className="grid grid-cols-2 gap-1">
+                    <div className="w-3 h-3 bg-white rounded-sm"></div>
+                    <div className="w-3 h-3 bg-white/80 rounded-sm"></div>
+                    <div className="w-3 h-3 bg-white/80 rounded-sm"></div>
+                    <div className="w-3 h-3 bg-white rounded-sm"></div>
+                  </div>
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-bold text-2xl tracking-tight text-primary-700">
-                    Databricks
+                  <span className="font-bold text-2xl tracking-tight text-databricks-navy-800">
+                    databricks
                   </span>
-                  <span className="text-sm font-medium text-secondary-600 -mt-1">
+                  <span className="text-sm font-medium text-databricks-lava-600 -mt-1">
                     Travel Data
                   </span>
                 </div>
               </div>
-              <p className="mt-3 text-neutral-600">
+              <p className="mt-3 text-databricks-navy-600">
                 Sign in to the premier travel data marketplace
               </p>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-databricks-navy-700 mb-1">
                   Email
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-neutral-400" />
+                    <Mail className="h-5 w-5 text-databricks-navy-400" />
                   </div>
                   <input
                     id="email"
@@ -64,19 +68,19 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-11 pr-3 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-neutral-900"
+                    className="block w-full pl-11 pr-3 py-3 border border-databricks-oat-medium rounded-lg focus:ring-2 focus:ring-databricks-lava-500 focus:border-databricks-lava-500 text-databricks-navy-900"
                     placeholder="you@example.com"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-neutral-700 mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-databricks-navy-700 mb-1">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-neutral-400" />
+                    <Lock className="h-5 w-5 text-databricks-navy-400" />
                   </div>
                   <input
                     id="password"
@@ -86,12 +90,12 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-11 pr-11 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-neutral-900"
+                    className="block w-full pl-11 pr-11 py-3 border border-databricks-oat-medium rounded-lg focus:ring-2 focus:ring-databricks-lava-500 focus:border-databricks-lava-500 text-databricks-navy-900"
                     placeholder="•••••••••"
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-neutral-500"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-databricks-navy-400 hover:text-databricks-navy-500"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -105,15 +109,15 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
+                    className="h-4 w-4 text-databricks-lava-600 focus:ring-databricks-lava-500 border-databricks-oat-medium rounded"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-neutral-700">
+                  <label htmlFor="remember-me" className="ml-2 block text-sm text-databricks-navy-700">
                     Remember me
                   </label>
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-primary-700 hover:text-primary-800">
+                  <a href="#" className="font-medium text-databricks-lava-600 hover:text-databricks-lava-700">
                     Forgot password?
                   </a>
                 </div>
@@ -121,7 +125,7 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
 
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-databricks text-sm font-medium text-white bg-gradient-to-r from-databricks-lava-600 to-databricks-lava-700 hover:from-databricks-lava-700 hover:to-databricks-lava-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-databricks-lava-500 transition-all duration-200"
                 disabled={isLoggingIn}
               >
                 {isLoggingIn ? (
@@ -137,9 +141,9 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
             </form>
             
             <div className="mt-6 text-center text-sm">
-              <p className="text-neutral-600">
+              <p className="text-databricks-navy-600">
                 Don't have an account?{' '}
-                <a href="#" className="font-medium text-primary-700 hover:text-primary-800">
+                <a href="#" className="font-medium text-databricks-lava-600 hover:text-databricks-lava-700">
                   Create one now
                 </a>
               </p>
@@ -147,11 +151,11 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
           </div>
         </div>
         
-        <p className="mt-4 text-center text-xs text-neutral-500">
+        <p className="mt-4 text-center text-xs text-databricks-navy-500">
           By signing in, you agree to our{' '}
-          <a href="#" className="text-neutral-700 hover:text-neutral-900">Terms of Service</a>
+          <a href="#" className="text-databricks-navy-700 hover:text-databricks-navy-800">Terms of Service</a>
           {' '}and{' '}
-          <a href="#" className="text-neutral-700 hover:text-neutral-900">Privacy Policy</a>
+          <a href="#" className="text-databricks-navy-700 hover:text-databricks-navy-800">Privacy Policy</a>
         </p>
       </div>
     </div>

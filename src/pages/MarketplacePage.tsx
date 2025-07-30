@@ -98,10 +98,10 @@ const MarketplacePage = () => {
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-neutral-900">
+        <h1 className="text-2xl font-bold text-databricks-navy-800">
           Databricks Travel Data Marketplace
         </h1>
-        <p className="text-neutral-600">
+        <p className="text-databricks-navy-600">
           Discover and access premium travel and hospitality datasets powered by Databricks
         </p>
       </div>
@@ -114,8 +114,8 @@ const MarketplacePage = () => {
 
       {filteredDatasets.length === 0 ? (
         <div className="text-center py-12">
-          <h3 className="text-lg font-medium text-neutral-700">No datasets found</h3>
-          <p className="mt-2 text-neutral-500">
+          <h3 className="text-lg font-medium text-databricks-navy-700">No datasets found</h3>
+          <p className="mt-2 text-databricks-navy-500">
             Try adjusting your search or filters to find what you're looking for
           </p>
         </div>
@@ -124,7 +124,7 @@ const MarketplacePage = () => {
           {/* Featured dataset */}
           {filteredDatasets.length > 0 && (
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-neutral-900 mb-4">Featured Dataset</h2>
+              <h2 className="text-xl font-semibold text-databricks-navy-800 mb-4">Featured Dataset</h2>
               <DatasetCard 
                 dataset={filteredDatasets[0]} 
                 featured={true}
@@ -134,7 +134,7 @@ const MarketplacePage = () => {
 
           {/* Regular dataset grid */}
           <div>
-            <h2 className="text-xl font-semibold text-neutral-900 mb-4">All Datasets</h2>
+            <h2 className="text-xl font-semibold text-databricks-navy-800 mb-4">All Datasets</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredDatasets.map((dataset) => (
                 <DatasetCard key={dataset.id} dataset={dataset} />
