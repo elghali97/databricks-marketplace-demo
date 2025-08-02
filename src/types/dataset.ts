@@ -1,12 +1,12 @@
 export enum DatasetCategory {
-  PASSENGER_TRAFFIC = 'Passenger Traffic',
-  FLIGHT_SCHEDULES = 'Flight Schedules',
-  HOTEL_OCCUPANCY = 'Hotel Occupancy',
-  BOOKING_PATTERNS = 'Booking Patterns',
-  LOYALTY_PROGRAM = 'Loyalty Program Data',
-  REVENUE_MANAGEMENT = 'Revenue Management',
-  OPERATIONAL = 'Operational Data',
-  MARKET_INTELLIGENCE = 'Market Intelligence'
+  MARKET_TRADING = 'Market & Trading Data',
+  ALTERNATIVE_DATA = 'Alternative & Enrichment Data',
+  REFERENCE_DATA = 'Reference & Master Data',
+  RISK_COMPLIANCE = 'Risk, Compliance & Regulatory',
+  CUSTOMER_ANALYTICS = 'Customer & Analytics Data',
+  ESG_SUSTAINABILITY = 'ESG & Sustainability',
+  CREDIT_RISK = 'Credit Risk & Scoring',
+  FRAUD_DETECTION = 'Fraud Detection & Security'
 }
 
 export enum DataFrequency {

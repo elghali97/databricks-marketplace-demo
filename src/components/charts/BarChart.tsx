@@ -31,39 +31,42 @@ const BarChart = ({
       <RechartsBarChart
         data={data}
         margin={{
-          top: 10,
-          right: 20,
+          top: 20,
+          right: 30,
           left: 20,
-          bottom: 10,
+          bottom: 20,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" opacity={0.5} />
+        <CartesianGrid strokeDasharray="2 2" stroke="#E8E3DC" opacity={0.6} />
         <XAxis 
           dataKey={xKey} 
-          tick={{ fontSize: 12, fill: '#5A544C' }}
-          axisLine={{ stroke: '#E8E3DC' }}
-          tickLine={{ stroke: '#E8E3DC' }}
+          tick={{ fontSize: 12, fill: '#5A544C', fontFamily: 'Inter, system-ui, sans-serif' }}
+          axisLine={{ stroke: '#D5D0C7', strokeWidth: 1 }}
+          tickLine={{ stroke: '#D5D0C7', strokeWidth: 1 }}
         />
         <YAxis 
-          tick={{ fontSize: 12, fill: '#5A544C' }}
-          axisLine={{ stroke: '#E8E3DC' }}
-          tickLine={{ stroke: '#E8E3DC' }}
+          tick={{ fontSize: 12, fill: '#5A544C', fontFamily: 'Inter, system-ui, sans-serif' }}
+          axisLine={{ stroke: '#D5D0C7', strokeWidth: 1 }}
+          tickLine={{ stroke: '#D5D0C7', strokeWidth: 1 }}
         />
         <Tooltip 
           contentStyle={{ 
-            backgroundColor: 'white', 
+            backgroundColor: '#FFFFFF', 
             border: '1px solid #E8E3DC',
-            borderRadius: '0.5rem',
-            boxShadow: '0 10px 25px -5px rgba(19, 26, 41, 0.15)',
-            fontSize: '12px'
+            borderRadius: '8px',
+            boxShadow: '0 10px 25px -5px rgba(19, 26, 41, 0.1), 0 4px 6px -2px rgba(19, 26, 41, 0.05)',
+            fontSize: '14px',
+            fontFamily: 'Inter, system-ui, sans-serif'
           }}
-          labelStyle={{ color: '#131A29', fontWeight: 500 }}
+          labelStyle={{ color: '#131A29', fontWeight: 600, marginBottom: '4px' }}
+          itemStyle={{ color: '#2A3441', fontWeight: 500 }}
         />
         <Bar 
           dataKey={yKey} 
           fill={color}
-          radius={[4, 4, 0, 0]}
-          animationDuration={1500}
+          radius={[6, 6, 0, 0]}
+          animationDuration={1200}
+          animationBegin={200}
         />
       </RechartsBarChart>
     </ResponsiveContainer>
@@ -74,9 +77,9 @@ const BarChart = ({
   }
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-card border border-databricks-oat-medium">
-      {title && <h3 className="text-lg font-semibold mb-4 text-databricks-navy-800">{title}</h3>}
-      <div className="h-64">
+    <div className="bg-white p-6 rounded-xl shadow-databricks border border-databricks-oat-medium hover:shadow-lg transition-shadow duration-300">
+      {title && <h3 className="text-xl font-bold mb-6 text-databricks-navy-800 tracking-tight">{title}</h3>}
+      <div className="h-72">
         {chartContent}
       </div>
     </div>

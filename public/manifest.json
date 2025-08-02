@@ -1,7 +1,7 @@
 {
-  "name": "Databricks Travel Data Marketplace",
+  "name": "Databricks Data Intelligence Marketplace for Financial Services",
   "short_name": "Databricks Data",
-  "description": "Access premium travel industry data and analytics",
+  "description": "Access premium data intelligence solutions for financial services",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

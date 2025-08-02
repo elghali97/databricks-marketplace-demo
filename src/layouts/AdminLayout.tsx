@@ -8,7 +8,7 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-databricks-oat-light via-white to-databricks-oat-medium flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-slate-200 flex flex-col">
       <AdminHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex flex-1">
         <AdminSidebar 
@@ -16,10 +16,8 @@ const AdminLayout = () => {
           onClose={() => setSidebarOpen(false)}
           onToggle={() => setSidebarOpen(!sidebarOpen)}
         />
-        <main className="flex-1 p-6 pt-24 lg:ml-80 transition-all duration-300">
-          <div className="container mx-auto max-w-7xl">
-            <Outlet />
-          </div>
+        <main className="flex-1 pt-24 md:pt-20 lg:ml-80 transition-all duration-300">
+          <Outlet />
         </main>
       </div>
       <Footer withSidebar={true} />

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 interface StatCardProps {
@@ -15,33 +16,65 @@ interface StatCardProps {
 const StatCard = ({ title, value, icon, change, className }: StatCardProps) => {
   return (
     <div className={cn(
-      "bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:translate-y-[-2px] hover:shadow-databricks border border-databricks-oat-medium", 
+      "group bg-white rounded-2xl shadow-databricks p-8 transition-all duration-500 hover:shadow-databricks-lg border border-databricks-oat-medium hover:border-databricks-lava-200 hover:-translate-y-1", 
       className
     )}>
       <div className="flex justify-between items-start">
-        <div>
-          <p className="text-sm font-medium text-databricks-navy-500">{title}</p>
-          <h3 className="text-2xl font-bold mt-1 text-databricks-navy-800">{value}</h3>
+        <div className="flex-1">
+          <p className="text-sm font-bold text-databricks-navy-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+            {title}
+          </p>
+          <h3 className="text-3xl font-bold text-databricks-navy-800 mb-4 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+            {value}
+          </h3>
           
           {change && (
-            <p className={cn(
-              "text-xs font-medium flex items-center mt-2",
-              change.isPositive ? "text-success-600" : "text-error-600"
+            <div className={cn(
+              "inline-flex items-center px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200",
+              change.isPositive 
+                ? "bg-gradient-to-r from-success-50 to-success-100 text-success-700 border border-success-200" 
+                : "bg-gradient-to-r from-red-50 to-red-100 text-red-700 border border-red-200"
             )}>
-              <span className={cn(
-                "inline-block mr-1",
-                change.isPositive ? "border-b-4 border-r-4 border-success-600 rotate-45 w-2 h-2" :
-                "border-t-4 border-r-4 border-error-600 -rotate-135 w-2 h-2"
-              )}></span>
-              {change.isPositive ? '+' : ''}{change.value}% from last period
-            </p>
+              {change.isPositive ? (
+                <TrendingUp className="w-4 h-4 mr-2" />
+              ) : (
+                <TrendingDown className="w-4 h-4 mr-2" />
+              )}
+              <span style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                {change.isPositive ? '+' : ''}{change.value}%
+              </span>
+            </div>
           )}
         </div>
         
-        <div className="p-3 rounded-full bg-databricks-lava-50 text-databricks-lava-600">
-          {icon}
+        <div className="relative">
+          {/* Animated background glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-databricks-lava-600 to-databricks-lava-700 rounded-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-300 animate-pulse"></div>
+          
+          {/* Icon container */}
+          <div className="relative p-4 rounded-2xl bg-gradient-to-br from-databricks-lava-50 to-databricks-lava-100 text-databricks-lava-600 group-hover:from-databricks-lava-100 group-hover:to-databricks-lava-200 group-hover:text-databricks-lava-700 transition-all duration-300 transform group-hover:scale-110">
+            {icon}
+          </div>
         </div>
       </div>
+
+      {/* Enhanced micro-interaction elements */}
+      <div className="mt-6 pt-4 border-t border-databricks-oat-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center justify-between text-xs text-databricks-navy-500">
+          <span style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+            vs. last period
+          </span>
+          <div className="flex items-center space-x-1">
+            <div className="w-2 h-2 bg-databricks-lava-600 rounded-full animate-pulse"></div>
+            <span className="font-semibold" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+              Live data
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Subtle gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-databricks-lava-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"></div>
     </div>
   );
 };

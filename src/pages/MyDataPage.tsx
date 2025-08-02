@@ -22,7 +22,12 @@ import {
   ExternalLink,
   Shield,
   Check,
-  X
+  X,
+  Sparkles,
+  TrendingUp,
+  Lightbulb,
+  Target,
+  ChevronRight
 } from 'lucide-react';
 import { mockDatasets } from '../data/mockData';
 import { formatCurrency, formatDate, formatNumber } from '../utils/formatters';
@@ -41,7 +46,7 @@ interface AccessRequest {
 }
 
 const MyDataPage = () => {
-  const { user } = useUser();
+  const { user, isProvider } = useUser();
   const [activeTab, setActiveTab] = useState<'owned' | 'accessed' | 'requests'>('owned');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDataset, setSelectedDataset] = useState<string | null>(null);
@@ -51,6 +56,38 @@ const MyDataPage = () => {
     type: 'success' | 'error';
     visible: boolean;
   }>({ message: '', type: 'success', visible: false });
+  
+  // AI-driven insights and recommendations
+  const currentHour = new Date().getHours();
+  const timeOfDay = currentHour < 12 ? 'morning' : currentHour < 17 ? 'afternoon' : 'evening';
+  
+  // Simulated AI insights
+  const aiInsights = [
+    {
+      type: 'recommendation',
+      title: 'New ESG dataset matches your interests',
+      description: 'Based on your recent searches, this sustainability dataset could be valuable',
+      action: 'View Dataset',
+      priority: 'high',
+      icon: Lightbulb
+    },
+    {
+      type: 'trend',
+      title: 'Credit risk data trending 23% this week',
+      description: 'Your field is seeing increased demand for credit analytics',
+      action: 'Explore Trend',
+      priority: 'medium',
+      icon: TrendingUp
+    },
+    {
+      type: 'opportunity',
+      title: 'New collaboration opportunity',
+      description: 'JP Morgan Chase has similar data needs in your portfolio',
+      action: 'Connect',
+      priority: 'low',
+      icon: Target
+    }
+  ];
   
   // Mock user's owned datasets (filter by provider)
   const ownedDatasets = mockDatasets.filter(dataset => 
@@ -210,24 +247,108 @@ const MyDataPage = () => {
   );
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Notification */}
-      {notification.visible && (
-        <div className={`fixed top-4 right-4 z-50 max-w-sm w-full ${
-          notification.type === 'success' ? 'bg-success-50 border-success-200 text-success-800' : 'bg-error-50 border-error-200 text-error-800'
-        } border rounded-lg p-4 shadow-lg animate-slide-in-right`}>
-          <div className="flex items-center">
-            {notification.type === 'success' ? (
-              <CheckCircle className="w-5 h-5 mr-3 text-success-600" />
-            ) : (
-              <XCircle className="w-5 h-5 mr-3 text-error-600" />
-            )}
-            <p className="text-sm font-medium">{notification.message}</p>
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-databricks-oat-light">
+      {/* Enhanced Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-databricks-navy-900 via-databricks-navy-800 to-databricks-navy-700 text-white mb-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-databricks-lava-600/10 to-transparent"></div>
+        <div className="relative px-6 py-12">
+          <div className="w-full px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+              {/* Welcome Section */}
+              <div className="lg:col-span-2">
+                <div className="flex items-center mb-4">
+                  <Sparkles className="h-6 w-6 text-databricks-lava-400 mr-3 animate-pulse" />
+                  <span className="text-databricks-lava-400 font-bold text-sm uppercase tracking-wider">
+                    AI-Powered Insights
+                  </span>
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Good {timeOfDay}, {user?.name}
+                </h1>
+                <p className="text-xl text-neutral-300 mb-6 leading-relaxed" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  {isProvider 
+                    ? 'Manage your financial datasets and track access requests across the Databricks marketplace'
+                    : 'Your personalized data management hub with Databricks AI-powered insights and access control'
+                  }
+                </p>
+                
+                {/* Quick Stats */}
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-databricks-lava-400" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      {isProvider ? ownedDatasets.length : accessedDatasets.length}
+                    </div>
+                    <div className="text-sm text-neutral-400" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      {isProvider ? 'Owned Datasets' : 'Accessible Datasets'}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-databricks-lava-400" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      {accessRequests.filter(r => r.status === 'pending').length}
+                    </div>
+                    <div className="text-sm text-neutral-400" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      Pending Requests
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-databricks-lava-400" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      98%
+                    </div>
+                    <div className="text-sm text-neutral-400" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      Data Quality
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* AI Insights Panel */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="flex items-center mb-4">
+                  <Sparkles className="h-5 w-5 text-databricks-lava-400 mr-2" />
+                  <h3 className="font-bold text-white" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                    AI Insights
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {aiInsights.slice(0, 2).map((insight, index) => (
+                    <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <insight.icon className="h-4 w-4 text-databricks-lava-400 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-white truncate" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                          {insight.title}
+                        </h4>
+                        <p className="text-xs text-neutral-300 mt-1" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                          {insight.description}
+                        </p>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-neutral-400 flex-shrink-0" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Header */}
+      <div className="space-y-6 animate-fade-in p-6">
+        {/* Notification */}
+        {notification.visible && (
+          <div className={`fixed top-4 right-4 z-50 max-w-sm w-full ${
+            notification.type === 'success' ? 'bg-success-50 border-success-200 text-success-800' : 'bg-error-50 border-error-200 text-error-800'
+          } border rounded-lg p-4 shadow-lg animate-slide-in-right`}>
+            <div className="flex items-center">
+              {notification.type === 'success' ? (
+                <CheckCircle className="w-5 h-5 mr-3 text-success-600" />
+              ) : (
+                <XCircle className="w-5 h-5 mr-3 text-error-600" />
+              )}
+              <p className="text-sm font-medium">{notification.message}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-neutral-900">My Data</h1>
@@ -555,6 +676,7 @@ const MyDataPage = () => {
           )}
         </div>
       )}
+      </div>
     </div>
   );
 };

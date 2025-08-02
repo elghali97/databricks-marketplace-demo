@@ -6,21 +6,25 @@ import { mockDatasets } from '../../data/mockData';
 
 const DatasetManagement = () => {
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 animate-fade-in px-6 py-8">
       {/* Header */}
       <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 text-white">
-            <Database className="h-5 w-5" />
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 text-white shadow-lg">
+            <Database className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-neutral-900">Dataset Management</h1>
-            <p className="text-neutral-600">Manage and monitor all datasets in the marketplace</p>
+            <h1 className="text-4xl font-bold text-slate-800 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+              Dataset Management
+            </h1>
+            <p className="text-slate-600 text-lg" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+              Manage and monitor all datasets in the marketplace
+            </p>
           </div>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-200 font-medium shadow-sm">
-            <Plus className="h-4 w-4" />
+          <button className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 transition-all duration-200 font-bold text-sm shadow-lg hover:shadow-xl">
+            <Plus className="h-5 w-5" />
             <span>Add Dataset</span>
           </button>
         </div>
@@ -28,94 +32,87 @@ const DatasetManagement = () => {
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
+        <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-xl">
-              <Database className="w-6 h-6 text-primary-600" />
+            <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl shadow-md">
+              <Database className="w-7 h-7 text-slate-700" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-600">Total Datasets</p>
-              <p className="text-2xl font-bold text-neutral-900">324</p>
+              <p className="text-sm font-bold text-slate-600" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>Total Datasets</p>
+              <p className="text-3xl font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>52</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
+        <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-success-100 rounded-xl">
-              <Database className="w-6 h-6 text-success-600" />
+            <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl shadow-md">
+              <Database className="w-7 h-7 text-emerald-700" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-600">Active Datasets</p>
-              <p className="text-2xl font-bold text-neutral-900">298</p>
+              <p className="text-sm font-bold text-slate-600" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>Active Datasets</p>
+              <p className="text-3xl font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>52</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
+        <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-warning-100 rounded-xl">
-              <Database className="w-6 h-6 text-warning-600" />
+            <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl shadow-md">
+              <Database className="w-7 h-7 text-amber-700" />
             </div>
             <div>
-              <p className="text-sm font-medium text-neutral-600">Pending Review</p>
-              <p className="text-2xl font-bold text-neutral-900">26</p>
+              <p className="text-sm font-bold text-slate-600" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>Pending Review</p>
+              <p className="text-3xl font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>3</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm">
-        <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
-          <div className="flex items-center space-x-3">
-            <Search className="h-5 w-5 text-neutral-500" />
-            <h2 className="text-lg font-semibold text-neutral-900">Search & Filter</h2>
+      <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-4">
+            <Search className="h-5 w-5 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Search datasets..."
+              className="flex-1 px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+              style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}
+            />
           </div>
           <div className="flex items-center space-x-3">
-            <Filter className="h-4 w-4 text-neutral-500" />
-            <select className="px-3 py-2 bg-white border border-neutral-200 rounded-lg text-sm text-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-              <option value="all">All Categories</option>
-              <option value="passenger">Passenger Traffic</option>
-              <option value="hotel">Hotel Occupancy</option>
-              <option value="operational">Operational</option>
+            <select className="px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm font-medium text-slate-700 shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+              <option value="">All Categories</option>
+              <option value="market-trading">Market & Trading</option>
+              <option value="alternative-data">Alternative Data</option>
+              <option value="risk-compliance">Risk & Compliance</option>
+              <option value="esg-sustainability">ESG & Sustainability</option>
             </select>
-            <select className="px-3 py-2 bg-white border border-neutral-200 rounded-lg text-sm text-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-              <option value="all">All Status</option>
+            <select className="px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm font-medium text-slate-700 shadow-sm hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+              <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="pending">Pending</option>
               <option value="inactive">Inactive</option>
             </select>
           </div>
         </div>
-                 <div className="mt-4">
-           <SearchFilter 
-             onSearch={(query) => console.log('Search:', query)}
-             onFilter={(filters) => console.log('Filter:', filters)}
-           />
-         </div>
       </div>
 
       {/* Dataset Grid */}
-      <div className="bg-white border border-neutral-200 rounded-xl shadow-sm">
-        <div className="p-6 border-b border-neutral-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-neutral-900">All Datasets</h2>
-              <p className="text-sm text-neutral-600">Manage dataset visibility, pricing, and access controls</p>
-            </div>
-            <div className="flex items-center space-x-2 text-sm text-neutral-500">
-              <span>Showing 324 datasets</span>
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {mockDatasets.slice(0, 9).map((dataset) => (
+          <div key={dataset.id} className="transform hover:scale-[1.02] transition-all duration-300">
+            <DatasetCard dataset={dataset} />
           </div>
-        </div>
-        <div className="p-6">
-                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {mockDatasets.slice(0, 6).map((dataset) => (
-               <DatasetCard key={dataset.id} dataset={dataset} />
-             ))}
-           </div>
-        </div>
+        ))}
+      </div>
+
+      {/* Load More */}
+      <div className="flex justify-center">
+        <button className="px-8 py-3 bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 rounded-xl hover:from-slate-200 hover:to-slate-300 transition-all duration-200 font-bold text-sm shadow-lg hover:shadow-xl">
+          Load More Datasets
+        </button>
       </div>
     </div>
   );

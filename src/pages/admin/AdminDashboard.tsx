@@ -9,7 +9,10 @@ import {
   ArrowDown,
   TrendingUp,
   Activity,
-  Shield
+  Shield,
+  CheckCircle,
+  Clock,
+  AlertTriangle
 } from 'lucide-react';
 import StatCard from '../../components/common/StatCard';
 import BarChart from '../../components/charts/BarChart';
@@ -17,18 +20,64 @@ import { formatNumber, formatCurrency } from '../../utils/formatters';
 import { analyticsData } from '../../data/mockData';
 
 const AdminDashboard = () => {
+  // Admin-specific activity data
+  const recentActivities = [
+    {
+      id: 1,
+      action: 'New dataset approved',
+      description: 'S&P Global Credit Analytics Q4 2024 approved for marketplace',
+      timestamp: '5 minutes ago',
+      status: 'approved',
+      icon: CheckCircle,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-100'
+    },
+    {
+      id: 2,
+      action: 'Provider registration',
+      description: 'TransUnion submitted registration for review',
+      timestamp: '23 minutes ago',
+      status: 'pending',
+      icon: Clock,
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-100'
+    },
+    {
+      id: 3,
+      action: 'High API usage detected',
+      description: 'Bloomberg Terminal API usage 15% above threshold',
+      timestamp: '1 hour ago',
+      status: 'warning',
+      icon: AlertTriangle,
+      color: 'text-red-600',
+      bgColor: 'bg-red-100'
+    },
+    {
+      id: 4,
+      action: 'Revenue milestone reached',
+      description: 'Monthly revenue target exceeded by 12%',
+      timestamp: '2 hours ago',
+      status: 'success',
+      icon: TrendingUp,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100'
+    }
+  ];
+
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 animate-fade-in px-6 py-8">
       {/* Header */}
       <div className="flex flex-col space-y-2">
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 text-white">
-            <Shield className="h-5 w-5" />
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 text-white shadow-lg">
+            <Shield className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-neutral-900">Admin Dashboard</h1>
-            <p className="text-neutral-600">
-              Overview of Databricks Travel Data Marketplace performance and statistics
+            <h1 className="text-4xl font-bold text-slate-800 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+              Admin Dashboard
+            </h1>
+            <p className="text-slate-600 text-lg" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+              Financial Data Marketplace Management & Analytics
             </p>
           </div>
         </div>
@@ -41,210 +90,187 @@ const AdminDashboard = () => {
           value={formatNumber(analyticsData.totalDatasets)} 
           icon={<Database className="h-6 w-6" />} 
           change={{ value: 12, isPositive: true }}
-          className="bg-white border border-neutral-200 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] rounded-2xl"
         />
         <StatCard 
           title="Active Users" 
           value={formatNumber(analyticsData.activeUsers)} 
           icon={<Users className="h-6 w-6" />} 
           change={{ value: 8, isPositive: true }}
-          className="bg-white border border-neutral-200 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] rounded-2xl"
         />
         <StatCard 
           title="Total Revenue" 
           value={formatCurrency(analyticsData.revenueGenerated)} 
           icon={<DollarSign className="h-6 w-6" />} 
           change={{ value: 22, isPositive: true }}
-          className="bg-white border border-neutral-200 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] rounded-2xl"
         />
         <StatCard 
           title="Data Providers" 
           value={formatNumber(analyticsData.totalProviders)} 
           icon={<BarChart3 className="h-6 w-6" />} 
           change={{ value: 5, isPositive: true }}
-          className="bg-white border border-neutral-200 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white border border-slate-300 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] rounded-2xl"
         />
       </div>
       
       {/* Charts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary-100">
-                <TrendingUp className="h-5 w-5 text-primary-600" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white border border-slate-300 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-md">
+                <TrendingUp className="h-7 w-7 text-slate-700" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900">Monthly Downloads</h3>
-                <p className="text-sm text-neutral-600">Dataset access trends</p>
+                <h3 className="text-2xl font-bold text-slate-800 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Monthly Data Access
+                </h3>
+                <p className="text-sm text-slate-600 font-medium" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Dataset download trends & usage analytics
+                </p>
               </div>
             </div>
+            <button className="p-3 rounded-xl hover:bg-slate-100 transition-colors">
+              <RefreshCw className="h-5 w-5 text-slate-600" />
+            </button>
           </div>
           <div className="h-80">
             <BarChart 
               data={analyticsData.monthlyDownloads}
               xKey="month"
               yKey="downloads"
-              color="#4F46E5"
+              color="#475569"
               minimal={true}
             />
           </div>
         </div>
         
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-success-100">
-                <DollarSign className="h-5 w-5 text-success-600" />
+        <div className="bg-white border border-slate-300 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-200 shadow-md">
+                <DollarSign className="h-7 w-7 text-emerald-700" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900">Monthly Revenue</h3>
-                <p className="text-sm text-neutral-600">Financial performance</p>
+                <h3 className="text-2xl font-bold text-slate-800 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Monthly Revenue
+                </h3>
+                <p className="text-sm text-slate-600 font-medium" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Financial performance & growth metrics
+                </p>
               </div>
             </div>
+            <button className="p-3 rounded-xl hover:bg-slate-100 transition-colors">
+              <RefreshCw className="h-5 w-5 text-slate-600" />
+            </button>
           </div>
           <div className="h-80">
             <BarChart 
               data={analyticsData.monthlyRevenue}
               xKey="month"
               yKey="revenue"
-              color="#0D9488"
+              color="#059669"
               minimal={true}
             />
           </div>
         </div>
       </div>
       
-      {/* Recent activity */}
-      <div className="bg-white border border-neutral-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-        <div className="p-6 border-b border-neutral-200">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary-100">
-                <Activity className="h-5 w-5 text-secondary-600" />
+      {/* Recent Admin Activity */}
+      <div className="bg-white border border-slate-300 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
+        <div className="p-8 border-b border-slate-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 shadow-md">
+                <Activity className="h-6 w-6 text-slate-700" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold text-neutral-900">Recent Activity</h2>
-                <p className="text-sm text-neutral-600">Latest marketplace events</p>
+                <h3 className="text-2xl font-bold text-slate-800 tracking-tight" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Recent Admin Activity
+                </h3>
+                <p className="text-sm text-slate-600" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Latest system events and administrative actions
+                </p>
               </div>
             </div>
-            <button className="flex items-center px-4 py-2 text-sm font-medium text-neutral-600 hover:text-primary-700 hover:bg-neutral-50 rounded-lg transition-colors">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+            <button className="px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 transition-all duration-200 font-bold text-sm shadow-lg">
+              View All
             </button>
           </div>
         </div>
-        
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-neutral-200">
-            <thead className="bg-neutral-50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                  Event
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                  Dataset
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                  Time
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-neutral-200">
-              {[
-                { event: 'Data Access Request', user: 'marcus@travelcorp.com', dataset: 'Global Airline Passenger Traffic', time: '5 minutes ago', status: 'pending' },
-                { event: 'Dataset Downloaded', user: 'jessica@airlinepartners.com', dataset: 'Airline On-Time Performance Statistics', time: '32 minutes ago', status: 'completed' },
-                { event: 'New Dataset Published', user: 'alex@airlinetech.com', dataset: 'Global Travel Booking Patterns & Trends', time: '1 hour ago', status: 'completed' },
-                { event: 'Access Request Approved', user: 'samantha@hoteldata.com', dataset: 'Hotel Revenue Management Benchmarks', time: '3 hours ago', status: 'completed' },
-                { event: 'User Registration', user: 'new.user@flyright.com', dataset: '-', time: '5 hours ago', status: 'completed' },
-              ].map((activity, index) => (
-                <tr key={index} className="hover:bg-neutral-50 transition-colors">
-                  <td className="px-6 py-4 text-sm font-medium text-neutral-900">
-                    {activity.event}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-neutral-700">
-                    {activity.user}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-neutral-700">
-                    {activity.dataset}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-neutral-500">
-                    {activity.time}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                      activity.status === 'completed' ? 'bg-success-100 text-success-800' : 
-                      activity.status === 'pending' ? 'bg-warning-100 text-warning-800' : 
-                      'bg-error-100 text-error-800'
-                    }`}>
-                      {activity.status === 'completed' ? (
-                        <ArrowUp className="mr-1 h-3 w-3" />
-                      ) : activity.status === 'pending' ? (
-                        <RefreshCw className="mr-1 h-3 w-3" />
-                      ) : (
-                        <AlertCircle className="mr-1 h-3 w-3" />
-                      )}
-                      {activity.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="p-8">
+          <div className="space-y-6">
+            {recentActivities.map((activity) => {
+              const IconComponent = activity.icon;
+              return (
+                <div key={activity.id} className="flex items-start space-x-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors">
+                  <div className={`p-3 rounded-2xl ${activity.bgColor} shadow-sm`}>
+                    <IconComponent className={`h-5 w-5 ${activity.color}`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                        {activity.action}
+                      </h4>
+                      <span className="text-xs text-slate-500" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                        {activity.timestamp}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 leading-relaxed" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                      {activity.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-      
-      {/* Quick actions */}
+
+      {/* System Status Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-warning-100">
-              <AlertCircle className="h-5 w-5 text-warning-600" />
+        <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-200">
+              <CheckCircle className="h-6 w-6 text-emerald-700" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900">Pending Approvals</h3>
-              <p className="text-sm text-neutral-600">8 datasets waiting for approval</p>
+              <h4 className="font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                System Status
+              </h4>
+              <p className="text-sm text-emerald-600 font-semibold">All systems operational</p>
             </div>
           </div>
-          <button className="w-full py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-200 font-medium shadow-sm">
-            Review Datasets
-          </button>
         </div>
-        
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary-100">
-              <Users className="h-5 w-5 text-secondary-600" />
+
+        <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-200">
+              <Clock className="h-6 w-6 text-amber-700" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900">Access Requests</h3>
-              <p className="text-sm text-neutral-600">12 new access requests to review</p>
+              <h4 className="font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                Pending Reviews
+              </h4>
+              <p className="text-sm text-amber-600 font-semibold">3 items require attention</p>
             </div>
           </div>
-          <button className="w-full py-3 bg-gradient-to-r from-secondary-600 to-secondary-700 text-white rounded-lg hover:from-secondary-700 hover:to-secondary-800 transition-all duration-200 font-medium shadow-sm">
-            Manage Requests
-          </button>
         </div>
-        
-        <div className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-success-100">
-              <Activity className="h-5 w-5 text-success-600" />
+
+        <div className="bg-white border border-slate-300 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200">
+              <TrendingUp className="h-6 w-6 text-blue-700" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900">System Health</h3>
-              <p className="text-sm text-neutral-600">All systems operating normally</p>
+              <h4 className="font-bold text-slate-800" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                Performance
+              </h4>
+              <p className="text-sm text-blue-600 font-semibold">98.7% uptime this month</p>
             </div>
           </div>
-          <button className="w-full py-3 bg-gradient-to-r from-success-600 to-success-700 text-white rounded-lg hover:from-success-700 hover:to-success-800 transition-all duration-200 font-medium shadow-sm">
-            View Status
-          </button>
         </div>
       </div>
     </div>

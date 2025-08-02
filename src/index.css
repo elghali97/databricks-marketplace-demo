@@ -1,8 +1,30 @@
+/* Import Databricks brand fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom animations */
+/* Base layer with Databricks typography */
+@layer base {
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code, pre {
+    font-family: 'DM Mono', monospace;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Enhanced animations for micro-interactions */
 @keyframes slide-in-right {
   from {
     transform: translateX(100%);
@@ -31,4 +53,210 @@
 
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 54, 33, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 54, 33, 0.4);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.3s ease-out;
+}
+
+/* Enhanced shadow utilities for Databricks design */
+@layer utilities {
+  .shadow-databricks {
+    box-shadow: 0 4px 6px -1px rgba(19, 26, 41, 0.08), 0 2px 4px -1px rgba(19, 26, 41, 0.04);
+  }
+  
+  .shadow-databricks-lg {
+    box-shadow: 0 10px 15px -3px rgba(19, 26, 41, 0.08), 0 4px 6px -2px rgba(19, 26, 41, 0.04);
+  }
+  
+  .shadow-databricks-xl {
+    box-shadow: 0 20px 25px -5px rgba(19, 26, 41, 0.08), 0 10px 10px -5px rgba(19, 26, 41, 0.04);
+  }
+  
+  .shadow-databricks-2xl {
+    box-shadow: 0 25px 50px -12px rgba(19, 26, 41, 0.12);
+  }
+  
+  .shadow-lava {
+    box-shadow: 0 4px 14px 0 rgba(255, 54, 33, 0.15);
+  }
+  
+  .shadow-lava-lg {
+    box-shadow: 0 10px 25px -5px rgba(255, 54, 33, 0.2), 0 4px 6px -2px rgba(255, 54, 33, 0.05);
+  }
+}
+
+/* Backdrop blur support for enhanced glass effects */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-custom {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Enhanced hover states for interactive elements */
+@layer components {
+  .btn-databricks-primary {
+    @apply bg-gradient-to-r from-databricks-lava-600 to-databricks-lava-700 text-white font-bold py-3 px-6 rounded-xl hover:from-databricks-lava-700 hover:to-databricks-lava-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  
+  .btn-databricks-secondary {
+    @apply bg-white border-2 border-databricks-navy-200 text-databricks-navy-700 font-bold py-3 px-6 rounded-xl hover:border-databricks-navy-300 hover:bg-databricks-navy-50 transition-all duration-200;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  
+  .card-databricks {
+    @apply bg-white rounded-2xl shadow-databricks border border-databricks-oat-medium hover:shadow-databricks-lg transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20;
+  }
+  
+  .gradient-text-databricks {
+    @apply bg-gradient-to-r from-databricks-lava-600 to-databricks-lava-700 bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus states for accessibility */
+.focus-databricks:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 54, 33, 0.2);
+  border-color: #FF3621;
+}
+
+/* Enhanced loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .card-databricks {
+    @apply rounded-xl;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    line-height: 2.25rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-databricks {
+    @apply bg-databricks-navy-900 text-white;
+  }
+  
+  .dark-mode-databricks .card-databricks {
+    @apply bg-databricks-navy-800 border-databricks-navy-700;
+  }
+  
+  .dark-mode-databricks ::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+  
+  .dark-mode-databricks ::-webkit-scrollbar-thumb {
+    background: #475569;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .card-databricks {
+    @apply shadow-none border border-gray-300;
+  }
 }

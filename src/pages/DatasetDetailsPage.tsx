@@ -15,7 +15,8 @@ import {
   ShieldCheck,
   Play,
   RefreshCw,
-  Database
+  Database,
+  Award
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { useSampleData } from '../hooks/useSampleData';
@@ -41,13 +42,37 @@ const DatasetDetailsPage = () => {
     refetch: refetchSampleData 
   } = useSampleData(id || '', !!dataset?.sampleAvailable);
   
+  // Function to check if dataset is the featured dataset (highest quality)
+  const isFeaturedDataset = (dataset: Dataset) => {
+    if (!dataset) return false;
+    
+    // Get the featured dataset using the same logic as MarketplacePage
+    const sortedDatasets = [...mockDatasets].sort((a, b) => {
+      // Primary sort: Quality score (descending)
+      if (b.qualityScore !== a.qualityScore) {
+        return b.qualityScore - a.qualityScore;
+      }
+      // Secondary sort: Rating (descending)
+      if (b.rating !== a.rating) {
+        return b.rating - a.rating;
+      }
+      // Tertiary sort: Download count (descending)
+      return b.downloadCount - a.downloadCount;
+    });
+    
+    // The featured dataset is the first one (highest quality)
+    return sortedDatasets.length > 0 && sortedDatasets[0].id === dataset.id;
+  };
+
   // Check if user has access to this dataset
-  // This should match the logic from MyDataPage for accessed datasets
+  // ALL accessible datasets get: Live Data Preview + Dataset Overview + Data Intelligence Visualization
   const userHasAccess = dataset && (
     // User owns the dataset
     dataset.provider.name === user?.organization ||
     // User has been granted access (simulate with dataset IDs)
-    ['1', '2', '5', '8', '12', '15'].includes(dataset.id)
+    ['1', '2', '5', '8', '12', '15'].includes(dataset.id) ||
+    // Featured dataset gets exclusive access (highest quality dataset)
+    isFeaturedDataset(dataset)
   );
   
   useEffect(() => {
@@ -99,9 +124,48 @@ const DatasetDetailsPage = () => {
     // Open Databricks workspace in a new tab
     window.open('https://dbc-913550aa-14d5.cloud.databricks.com/', '_blank');
   };
+
+  const handleDownload = () => {
+    // In a real app, this would initiate dataset download
+    alert(`Downloading ${dataset.title}... This would start the download process in a real application.`);
+  };
+
+
+
+  const handleShare = () => {
+    // In a real app, this would open share options or copy link to clipboard
+    if (navigator.share) {
+      navigator.share({
+        title: dataset.title,
+        text: dataset.description,
+        url: window.location.href,
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert('Dataset link copied to clipboard!');
+    }
+  };
   
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in px-6 py-6 pr-8">
+      {/* Featured Dataset Banner */}
+      {isFeaturedDataset(dataset) && (
+        <div className="mb-6 p-4 bg-gradient-to-r from-databricks-lava-600 to-databricks-lava-700 rounded-xl border border-databricks-lava-500 shadow-lg">
+          <div className="flex items-center justify-center text-center">
+            <Award className="h-6 w-6 text-white mr-3" />
+            <div className="text-white">
+              <p className="text-lg font-bold" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                🏆 Featured Premium Dataset
+              </p>
+              <p className="text-sm text-databricks-lava-100" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                Exclusive access to our top-rated financial intelligence with live data preview
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
         <div>
           <div className="flex items-center mb-2">
@@ -113,12 +177,31 @@ const DatasetDetailsPage = () => {
             </button>
             <span className="mx-2 text-neutral-400">/</span>
             <span className="text-neutral-800">{dataset.category}</span>
+            {isFeaturedDataset(dataset) && (
+              <>
+                <span className="mx-2 text-neutral-400">/</span>
+                <span className="text-databricks-lava-600 font-semibold">Featured</span>
+              </>
+            )}
           </div>
-          <h1 className="text-2xl font-bold text-neutral-900">{dataset.title}</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-neutral-900">{dataset.title}</h1>
+            {isFeaturedDataset(dataset) && (
+              <div className="flex items-center bg-gradient-to-r from-databricks-lava-100 to-databricks-lava-200 text-databricks-lava-800 px-3 py-1 rounded-full">
+                <Award className="h-4 w-4 mr-1" />
+                <span className="text-sm font-bold" style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}>
+                  Premium Pick
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="flex space-x-3">
-          <button className="px-3 py-2 border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 flex items-center transition-colors">
+          <button 
+            onClick={handleShare}
+            className="px-3 py-2 border border-neutral-300 rounded-md text-neutral-700 hover:bg-neutral-50 flex items-center transition-colors"
+          >
             <Share2 className="h-4 w-4 mr-1" />
             Share
           </button>
@@ -132,7 +215,10 @@ const DatasetDetailsPage = () => {
               Explore Dataset
             </button>
           ) : dataset.pricingModel === PricingModel.FREE ? (
-            <button className="px-4 py-2 bg-success-600 text-white rounded-md hover:bg-success-700 flex items-center transition-colors">
+            <button 
+              onClick={handleDownload}
+              className="px-4 py-2 bg-success-600 text-white rounded-md hover:bg-success-700 flex items-center transition-colors"
+            >
               <Download className="h-4 w-4 mr-2" />
               Download
             </button>
@@ -263,8 +349,8 @@ const DatasetDetailsPage = () => {
             </div>
           </div>
           
-          {/* Sample data section with Databricks integration */}
-          {dataset.sampleAvailable && (
+          {/* Live Data Preview - Available for all accessible datasets */}
+          {dataset.sampleAvailable && userHasAccess && (
             <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center space-x-3">
@@ -281,10 +367,7 @@ const DatasetDetailsPage = () => {
                     className="flex items-center space-x-2 text-sm text-primary-700 hover:text-primary-800 font-medium disabled:opacity-50"
                   >
                     <RefreshCw className={`w-4 h-4 ${sampleLoading ? 'animate-spin' : ''}`} />
-                    <span>Refresh</span>
-                  </button>
-                  <button className="text-sm text-primary-700 hover:text-primary-800 font-medium">
-                    Download Sample
+                    <span>Refresh Data</span>
                   </button>
                 </div>
               </div>
@@ -366,7 +449,7 @@ const DatasetDetailsPage = () => {
             </div>
           )}
           
-          {/* Dataset summary for users with access */}
+          {/* Dataset Overview & Analytics - Available for all accessible datasets */}
           {!!userHasAccess && (
             <DataSummaryCard 
               data={sampleData} 
@@ -374,7 +457,7 @@ const DatasetDetailsPage = () => {
             />
           )}
           
-          {/* Data visualizations with access control */}
+          {/* Data Intelligence Visualization - Available for all accessible datasets */}
           <DataVisualizationPreview
             data={sampleData}
             dataset={dataset}
@@ -389,12 +472,31 @@ const DatasetDetailsPage = () => {
           {/* Pricing card */}
           <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200 sticky top-24">
             {userHasAccess ? (
-              <div className="mb-4 p-3 bg-secondary-50 border border-secondary-200 rounded-lg">
-                <div className="flex items-center text-secondary-800">
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  <span className="font-medium">Access Granted</span>
+              <div className={`mb-4 p-3 rounded-lg ${
+                isFeaturedDataset(dataset) 
+                  ? 'bg-gradient-to-r from-databricks-lava-50 to-databricks-lava-100 border border-databricks-lava-200' 
+                  : 'bg-secondary-50 border border-secondary-200'
+              }`}>
+                <div className={`flex items-center ${
+                  isFeaturedDataset(dataset) ? 'text-databricks-lava-800' : 'text-secondary-800'
+                }`}>
+                  {isFeaturedDataset(dataset) ? (
+                    <Award className="h-5 w-5 mr-2" />
+                  ) : (
+                    <CheckCircle className="h-5 w-5 mr-2" />
+                  )}
+                  <span className="font-medium">
+                    {isFeaturedDataset(dataset) ? 'Featured Premium Access' : 'Access Granted'}
+                  </span>
                 </div>
-                <p className="text-sm text-secondary-600 mt-1">You have full access to this dataset</p>
+                <p className={`text-sm mt-1 ${
+                  isFeaturedDataset(dataset) ? 'text-databricks-lava-700' : 'text-secondary-600'
+                }`}>
+                  {isFeaturedDataset(dataset) 
+                    ? 'Exclusive preview of our top-rated financial dataset with live data access'
+                    : 'Full access with live data preview, analytics, and intelligence visualization'
+                  }
+                </p>
               </div>
             ) : (
               <div className="text-2xl font-bold mb-2">
@@ -427,7 +529,10 @@ const DatasetDetailsPage = () => {
                 Explore Dataset
               </button>
             ) : dataset.pricingModel === PricingModel.FREE ? (
-              <button className="w-full py-3 bg-success-600 text-white rounded-md hover:bg-success-700 flex items-center justify-center transition-colors mb-4">
+              <button 
+                onClick={handleDownload}
+                className="w-full py-3 bg-success-600 text-white rounded-md hover:bg-success-700 flex items-center justify-center transition-colors mb-4"
+              >
                 <Download className="h-5 w-5 mr-2" />
                 Download Now
               </button>
@@ -449,11 +554,7 @@ const DatasetDetailsPage = () => {
               </button>
             )}
             
-            {dataset.sampleAvailable && (
-              <button className="w-full py-2.5 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50 transition-colors">
-                Download Sample
-              </button>
-            )}
+
             
             <div className="mt-6 pt-6 border-t border-neutral-200">
               <h3 className="font-semibold mb-4">Dataset Details</h3>
