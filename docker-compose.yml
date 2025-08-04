@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Frontend development server
+  frontend-dev:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    profiles:
+      - dev
+
+  # Backend development server
+  backend-dev:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./server:/app
+      - ./client/src/data:/app/data
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=True
+      - CORS_ORIGINS=["http://localhost:5173", "http://localhost:3000"]
+    profiles:
+      - dev
+
+  # Production service (serves both frontend and backend)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    profiles:
+      - prod
+
+  # Database (for future use)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: databricks_marketplace
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    profiles:
+      - full
+
+  # Redis cache (for future use)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    profiles:
+      - full
+
+volumes:
+  postgres_data: 

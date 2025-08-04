@@ -162,4 +162,61 @@ firestore-debug.log
 # Uncomment the one you DON'T use:
 # package-lock.json  # if using yarn
 # yarn.lock          # if using npm
-# pnpm-lock.yaml     # if using npm or yarn 
+# pnpm-lock.yaml     # if using npm or yarn
+
+# Python/Backend
+server/venv/
+server/.env
+server/.env.*
+server/__pycache__/
+server/*.pyc
+server/*.pyo
+server/*.pyd
+server/.Python
+server/env/
+server/ENV/
+server/pip-log.txt
+server/pip-delete-this-directory.txt
+server/.coverage
+server/.pytest_cache/
+server/htmlcov/
+server/instance/
+server/migrations/
+server/alembic/
+server/.mypy_cache/
+server/.dmypy.json
+server/dmypy.json
+server/*.egg-info/
+server/dist/
+server/build/
+server/wheels/
+server/share/python-wheels/
+server/*.egg
+server/MANIFEST
+server/.installed.cfg
+server/pip-selfcheck.json
+
+# Database related
+*.db-journal
+*.sqlite-journal
+*.db-wal
+*.db-shm
+pgdata/
+postgresql-data/
+
+# IDE and Editor files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+*.code-workspace
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Application specific
+server/test_db_direct.py
+server/debug_*.py
+server/setup_test.py
+client/dist-ssr/ 
