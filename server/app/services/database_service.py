@@ -90,14 +90,40 @@ class DatabaseService:
             logger.info("Falling back to static password authentication")
             self.databricks_client = None
     
-    def _extract_instance_name(self, host: str) -> str:
+    def _resolve_instance_name(self) -> Optional[str]:
         """
-        Extract instance name from the PostgreSQL host
+        Resolve the database instance name for OAuth credential generation.
+        Priority:
+        - PGINSTANCE_NAME env var (explicit)
+        - Extract from PGHOST for known patterns like '*.database.cloud.databricks.com'
+        Returns None if it cannot be determined reliably.
         """
-        # Extract instance name from host like: instance-864ee2de-0b83-4f24-bcbf-10b4f655c496.database.cloud.databricks.com
-        if '.database.cloud.databricks.com' in host:
-            return host.split('.database.cloud.databricks.com')[0]
-        return host
+        # 1) Explicit env var wins
+        explicit_instance = os.getenv('PGINSTANCE_NAME') or os.getenv('DB_INSTANCE_NAME')
+        if explicit_instance:
+            logger.info(f"Using explicit instance name from env: {explicit_instance}")
+            return explicit_instance
+        
+        # 2) Try extracting from PGHOST for known patterns
+        host = os.getenv('PGHOST', '')
+        if not host:
+            logger.warning("PGHOST is not set; cannot infer instance name")
+            return None
+        
+        # Known pattern: '<instance>.database.cloud.databricks.com'
+        suffix = '.database.cloud.databricks.com'
+        if host.endswith(suffix) and host.count('.') >= 4:
+            instance_name = host.split(suffix)[0]
+            logger.info(f"Derived instance name from PGHOST: {instance_name}")
+            return instance_name
+        
+        # If the host is a workspace hostname (e.g., 'e2-demo-field-eng.cloud.databricks.com'),
+        # it does not contain the database instance. In that case, we cannot infer it.
+        logger.warning(
+            "Could not determine instance name from PGHOST. "
+            "Provide PGINSTANCE_NAME to enable OAuth credential generation."
+        )
+        return None
     
     def _generate_database_credentials(self) -> Optional[Dict[str, str]]:
         """
@@ -108,10 +134,17 @@ class DatabaseService:
                 logger.warning("Databricks client not available for credential generation")
                 return None
             
-            # Get instance name from PGHOST
-            host = os.getenv('PGHOST', 'localhost')
-            instance_name = self._extract_instance_name(host)
+            # Resolve instance name (explicit env preferred)
+            instance_name = self._resolve_instance_name()
+            if not instance_name:
+                logger.warning(
+                    "Instance name is required for OAuth credential generation but was not provided. "
+                    "Set PGINSTANCE_NAME or DB_INSTANCE_NAME to proceed."
+                )
+                return None
             
+            # Get host for logging purposes only
+            host = os.getenv('PGHOST', 'localhost')
             logger.info(f"Generating database credentials for instance: {instance_name}")
             logger.info(f"Full host: {host}")
             

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Download, 
@@ -14,13 +14,12 @@ import {
   Users,
   ShieldCheck,
   Play,
-  RefreshCw,
-  Database,
   Award
 } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { useDataset, useDatasets } from '../hooks/useDatasets';
 import { TablePreview } from '../components/datasets/TablePreview';
+import DataVisualization from '../components/charts/DataVisualization';
 import { Dataset, PricingModel } from '../types/dataset';
 import { formatCurrency, formatDate, formatNumber } from '../utils/formatters';
 
@@ -458,70 +457,8 @@ const DatasetDetailsPage = () => {
           )}
           
           {/* Data Intelligence Visualization - Available for all accessible datasets */}
-          {!!userHasAccess && (
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200">
-              <h2 className="text-xl font-semibold mb-4">Data Intelligence Visualization</h2>
-              <p className="text-neutral-700 mb-6 leading-relaxed">
-                This section provides interactive visualizations and advanced analytics to help you uncover patterns, trends, and insights from the dataset.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h3 className="text-sm uppercase text-neutral-500 font-medium mb-2">Available Visualizations</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start">
-                      <Play className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-neutral-900 font-medium">Time Series Analysis</p>
-                        <p className="text-neutral-600 text-sm">
-                          Visualize passenger counts, load factors, and key metrics over time.
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <Play className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-neutral-900 font-medium">Geographic Distribution</p>
-                        <p className="text-neutral-600 text-sm">
-                          Explore passenger volumes across different regions and airports.
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <Play className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-neutral-900 font-medium">Airline Performance</p>
-                        <p className="text-neutral-600 text-sm">
-                          Compare performance across major airlines.
-                        </p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-sm uppercase text-neutral-500 font-medium mb-2">Data Sources</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start">
-                      <Database className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-neutral-900 font-medium">Databricks</p>
-                        <p className="text-neutral-600 text-sm">
-                          Real-time data ingestion and processing pipeline.
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <Database className="h-5 w-5 text-neutral-500 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-neutral-900 font-medium">Snowflake</p>
-                        <p className="text-neutral-600 text-sm">
-                          Secure and scalable data storage.
-                        </p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          {!!userHasAccess && dataset.sampleAvailable && (
+            <DataVisualization dataset={dataset} />
           )}
         </div>
         

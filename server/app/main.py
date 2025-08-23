@@ -18,7 +18,8 @@ load_dotenv()
 
 # Configuration
 API_V1_PREFIX = "/api"
-CLIENT_BUILD_PATH = Path(__file__).parent.parent.parent / "client" / "dist"
+# Updated path for Databricks Apps deployment - dist folder at root level
+CLIENT_BUILD_PATH = Path(__file__).parent.parent.parent.parent / "dist"
 
 app = FastAPI(
     title="Databricks Marketplace API",
@@ -28,10 +29,10 @@ app = FastAPI(
     redoc_url="/api/redoc"
 )
 
-# CORS middleware
+# CORS middleware - allow production domains
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "*"],  # Allow all origins in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -90,11 +91,12 @@ async def get_database_credentials_info():
                 "port": os.getenv("PGPORT", "not set"), 
                 "database": os.getenv("PGDATABASE", "not set"),
                 "user": os.getenv("PGUSER", "not set"),
-                "ssl_mode": os.getenv("PGSSLMODE", "not set")
+                "ssl_mode": os.getenv("PGSSLMODE", "not set"),
+                "instance_name": os.getenv("PGINSTANCE_NAME", "not set")
             },
             "databricks": {
                 "server_hostname": os.getenv("DATABRICKS_HOST", "not set"),
-                "http_path": os.getenv("DATABRICKS_WAREHOUSE_ID", "not set"),
+                "warehouse_id": os.getenv("DATABRICKS_WAREHOUSE_ID", "not set"),
                 "cli_profile": os.getenv("DATABRICKS_CLI_PROFILE", "not set"),
                 "has_access_token": bool(os.getenv("DATABRICKS_ACCESS_TOKEN")),
                 "has_client_credentials": bool(os.getenv("DATABRICKS_CLIENT_ID") and os.getenv("DATABRICKS_CLIENT_SECRET")),
@@ -148,7 +150,8 @@ async def test_database():
                     "port": os.getenv("PGPORT", "not set"),
                     "database": os.getenv("PGDATABASE", "not set"),
                     "user": os.getenv("PGUSER", "not set"),
-                    "ssl_mode": os.getenv("PGSSLMODE", "not set")
+                    "ssl_mode": os.getenv("PGSSLMODE", "not set"),
+                    "instance_name": os.getenv("PGINSTANCE_NAME", "not set")
                 }
             }
         else:
@@ -160,7 +163,8 @@ async def test_database():
                     "port": os.getenv("PGPORT", "not set"),
                     "database": os.getenv("PGDATABASE", "not set"),
                     "user": os.getenv("PGUSER", "not set"),
-                    "ssl_mode": os.getenv("PGSSLMODE", "not set")
+                    "ssl_mode": os.getenv("PGSSLMODE", "not set"),
+                    "instance_name": os.getenv("PGINSTANCE_NAME", "not set")
                 }
             }
     except Exception as e:
@@ -199,7 +203,7 @@ async def root():
             "docs": "/api/docs",
             "health": "/api/health",
             "database_test": "/api/database/test",
-            "note": "Frontend build not found. Run 'npm run build' in the client directory."
+            "note": "Frontend build not found. Run 'npm run build' to build the frontend."
         }
 
 if __name__ == "__main__":

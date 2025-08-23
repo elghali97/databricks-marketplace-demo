@@ -7,7 +7,7 @@ const demoUser: User = {
   name: 'El Ghali Benchekroun',
   email: 'elghali.benchekroun@databricks.com',
   role: UserRole.ADMIN,
-  organization: 'Databricks Financial Intelligence',
+  organization: 'S&P Global Market Intelligence',
   avatar: 'https://ca.slack-edge.com/E02727P8HV4-U05TRC8UE4T-6ae00704f9a7-512'
 };
 

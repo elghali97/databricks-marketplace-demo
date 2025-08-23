@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { 
   Sparkles, 
@@ -24,11 +24,22 @@ const MarketplacePage = () => {
   const initialQuery = queryParams.get('q') || '';
   const initialCategory = queryParams.get('category') || '';
 
+  // Separate input value from search query for smooth typing
+  const [inputValue, setInputValue] = useState(initialQuery);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [activeFilters, setActiveFilters] = useState<SearchFilters>({
     categories: [],
     frequencies: []
   });
+
+  // Debounced search effect for smooth typing experience
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setSearchQuery(inputValue);
+    }, 800); // Longer delay to let users complete their thoughts smoothly
+
+    return () => clearTimeout(timeoutId);
+  }, [inputValue]);
 
   // Use the new smart filtered datasets hook
   const { datasets, loading, error, refetch } = useFilteredDatasets({
@@ -99,6 +110,35 @@ const MarketplacePage = () => {
     setFilteredDatasets(filtered);
   }, [datasets, activeFilters]);
 
+  // All hooks must be called before any early returns
+  const handleSearch = useCallback((query: string) => {
+    setInputValue(query);
+    setSearchQuery(query); // Immediate search for form submission
+  }, []);
+
+  const handleFilter = useCallback((filters: SearchFilters) => {
+    setActiveFilters(filters);
+  }, []);
+
+  // Handle input change with smooth typing
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }, []);
+
+  // Handle enter key for immediate search
+  const handleKeyPress = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setSearchQuery(inputValue);
+    }
+  }, [inputValue]);
+
+  // Check if a category is currently selected
+  const isCategorySelected = activeFilters.categories.length > 0;
+
+  const handleCategoryClick = (category: DatasetCategory) => {
+    setActiveFilters({ categories: [category], frequencies: [] });
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -145,17 +185,6 @@ const MarketplacePage = () => {
       </div>
     );
   }
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const handleFilter = (filters: SearchFilters) => {
-    setActiveFilters(filters);
-  };
-
-  // Check if a category is currently selected
-  const isCategorySelected = activeFilters.categories.length > 0;
 
   // Combined quick actions and popular categories for discovery
   const discoveryItems = [
@@ -209,10 +238,6 @@ const MarketplacePage = () => {
     }
   ];
 
-  const handleCategoryClick = (category: DatasetCategory) => {
-    setActiveFilters({ categories: [category], frequencies: [] });
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-databricks-oat-light">
       {/* Hero Section with Enhanced Typography */}
@@ -241,13 +266,19 @@ const MarketplacePage = () => {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
                 <input
                   type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-6 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder-neutral-300 focus:outline-none focus:ring-2 focus:ring-databricks-lava-400 focus:border-transparent transition-all duration-300"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
+                  className="w-full pl-12 pr-24 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder-neutral-300 focus:outline-none focus:ring-2 focus:ring-databricks-lava-400 focus:border-transparent transition-all duration-300"
                   placeholder="Ask: 'Show me ESG data for European banks' or search datasets..."
                   style={{ fontFamily: 'DM Sans, system-ui, sans-serif' }}
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+                  {inputValue !== searchQuery && inputValue.length > 0 && (
+                    <div className="animate-pulse">
+                      <div className="w-2 h-2 bg-databricks-lava-400 rounded-full"></div>
+                    </div>
+                  )}
                   <span className="text-xs text-neutral-400 bg-white/10 px-2 py-1 rounded-md">
                     AI Search
                   </span>
@@ -369,7 +400,7 @@ const MarketplacePage = () => {
             <SearchFilter 
               onSearch={handleSearch}
               onFilter={handleFilter}
-              initialQuery={searchQuery}
+              initialQuery={inputValue}
             />
 
             {filteredDatasets.length === 0 ? (
@@ -410,7 +441,7 @@ const MarketplacePage = () => {
             <SearchFilter 
               onSearch={handleSearch}
               onFilter={handleFilter}
-              initialQuery={searchQuery}
+              initialQuery={inputValue}
             />
 
             {filteredDatasets.length === 0 ? (

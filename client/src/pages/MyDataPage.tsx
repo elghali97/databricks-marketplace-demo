@@ -6,8 +6,6 @@ import {
   Plus, 
   Search, 
   Filter, 
-  MoreVertical, 
-  Eye, 
   Edit, 
   Trash2, 
   Download, 
@@ -32,7 +30,7 @@ import {
 } from 'lucide-react';
 import { useDatasets } from '../hooks/useDatasets';
 import { formatCurrency, formatDate, formatNumber } from '../utils/formatters';
-import { Dataset, PricingModel } from '../types/dataset';
+import { PricingModel } from '../types/dataset';
 
 interface AccessRequest {
   id: string;
@@ -51,7 +49,6 @@ const MyDataPage = () => {
   const { datasets, loading, error } = useDatasets();
   const [activeTab, setActiveTab] = useState<'owned' | 'accessed' | 'requests'>('owned');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDataset, setSelectedDataset] = useState<string | null>(null);
   const [updatedRequests, setUpdatedRequests] = useState<Set<string>>(new Set());
   const [notification, setNotification] = useState<{
     message: string;
@@ -64,29 +61,29 @@ const MyDataPage = () => {
     {
       id: '1',
       datasetId: '1',
-      datasetTitle: 'Global Flight Traffic Analytics 2022-2023',
+      datasetTitle: 'Databricks AI-Enhanced US Equity Intelligence',
       requesterName: 'Marcus Chen',
       requesterEmail: 'marcus@travelcorp.com',
       requesterOrganization: 'Travel Corporation',
       requestDate: '2023-12-20',
       status: 'pending',
-      message: 'We need this data for our quarterly market analysis and route optimization project.'
+      message: 'We need this data for our quarterly market analysis and equity investment strategies.'
     },
     {
       id: '2',
       datasetId: '2',
-      datasetTitle: 'Hotel Occupancy & Revenue Intelligence',
+      datasetTitle: 'Databricks Global Equity Intelligence Hub',
       requesterName: 'Jessica Williams',
       requesterEmail: 'jessica@airlinepartners.com',
       requesterOrganization: 'Airline Partners Inc.',
       requestDate: '2023-12-19',
       status: 'pending',
-      message: 'Looking to understand hotel market trends for our travel package offerings.'
+      message: 'Looking to understand global equity markets for our investment portfolio diversification.'
     },
     {
       id: '3',
       datasetId: '1',
-      datasetTitle: 'Global Flight Traffic Analytics 2022-2023',
+      datasetTitle: 'Databricks AI-Enhanced US Equity Intelligence',
       requesterName: 'Sarah Mitchell',
       requesterEmail: 'sarah@datainsights.com',
       requesterOrganization: 'Data Insights Ltd',
@@ -96,7 +93,7 @@ const MyDataPage = () => {
     {
       id: '4',
       datasetId: '5',
-      datasetTitle: 'Airline Loyalty Program Analytics',
+      datasetTitle: 'Databricks Fixed Income Analytics Platform',
       requesterName: 'David Thompson',
       requesterEmail: 'david@loyaltytech.com',
       requesterOrganization: 'Loyalty Tech Solutions',
@@ -647,7 +644,12 @@ const MyDataPage = () => {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-lg font-semibold text-neutral-900">{request.datasetTitle}</h3>
+                      <Link 
+                        to={`/datasets/${request.datasetId}`}
+                        className="text-lg font-semibold text-neutral-900 hover:text-primary-700 transition-colors"
+                      >
+                        {request.datasetTitle}
+                      </Link>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center transition-all duration-300 ${getStatusColor(request.status)} ${
                         updatedRequests.has(request.id) ? 'animate-pulse' : ''
                       }`}>
@@ -683,10 +685,7 @@ const MyDataPage = () => {
                   {request.status === 'pending' && (
                     <div className="flex items-center space-x-2 ml-4">
                       <button 
-                        onClick={async () => {
-                          await handleRequestUpdate(request.id, 'approved');
-                          setUpdatedRequests(prev => new Set([...prev, request.id]));
-                        }}
+                        onClick={() => handleApproveRequest(request.id)}
                         className="px-3 py-1.5 bg-success-600 text-white text-sm rounded-md hover:bg-success-700 transition-all duration-200 flex items-center hover:shadow-md"
                       >
                         <Check className="w-4 h-4 mr-1" />

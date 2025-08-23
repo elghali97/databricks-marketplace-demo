@@ -12,6 +12,7 @@ A modern, full-stack financial data marketplace application built with React, Ty
 - [Database Setup](#database-setup)
 - [Development](#development)
 - [Production Deployment](#production-deployment)
+- [Databricks Apps Deployment](#databricks-apps-deployment)
 - [API Documentation](#api-documentation)
 - [Architecture](#architecture)
 - [Contributing](#contributing)
@@ -234,6 +235,106 @@ cd server
 
 The production server serves the built frontend from `client/build` and API from `/api`.
 
+## 🔥 Databricks Apps Deployment
+
+This application is optimized for seamless deployment with **Databricks Apps**. The project structure follows Databricks Apps requirements for combined Node.js/Python applications.
+
+### Deployment Overview
+
+Databricks Apps automatically detects and builds both frontend and backend components:
+
+1. **Dependency Installation**: `npm install` (installs all frontend build dependencies)
+2. **Python Dependencies**: `pip install -r requirements.txt` (installs backend dependencies)
+3. **Frontend Build**: `npm run build` (builds React app to `/dist`)
+4. **Application Start**: Runs command specified in `app.yaml`
+
+### Project Structure for Databricks Apps
+
+```
+databricks-marketplace-demo/
+├── package.json              # Node.js dependencies (all in dependencies, not devDependencies)
+├── requirements.txt           # Python dependencies
+├── vite.config.ts            # Frontend build configuration
+├── tailwind.config.js        # Tailwind CSS configuration
+├── tsconfig.json             # TypeScript configuration
+├── app.yaml                  # Databricks Apps deployment config
+├── dist/                     # Built frontend (generated)
+├── client/                   # React frontend source
+└── server/                   # FastAPI backend source
+```
+
+### Key Configuration Files
+
+#### app.yaml
+```yaml
+command: 
+  - "gunicorn"
+  - "server.app.main:app"
+  - "--bind"
+  - "0.0.0.0:8000"
+  - "--worker-class"
+  - "uvicorn.workers.UvicornWorker"
+env:
+  - name: "PGINSTANCE_NAME"
+    valueFrom: "lakebase-db"
+  - name: "DATABRICKS_CLIENT_ID"
+    valueFrom: "databricks-oauth"
+  - name: "DATABRICKS_CLIENT_SECRET"
+    valueFrom: "databricks-oauth"
+```
+
+#### Environment Variables for Production
+
+Set these in your Databricks Apps deployment:
+
+```bash
+# Database Configuration
+PGDATABASE=marketplace
+PGHOST=instance-xyz.database.cloud.databricks.com
+PGPORT=5432
+PGSSLMODE=require
+PGUSER=your-username
+PGINSTANCE_NAME=instance-xyz  # Required for OAuth credential generation
+
+# Databricks Configuration
+DATABRICKS_HOST=your-workspace.cloud.databricks.com
+DATABRICKS_WAREHOUSE_ID=your-warehouse-id
+DATABRICKS_CLIENT_ID=your-client-id
+DATABRICKS_CLIENT_SECRET=your-client-secret
+
+# Application Settings
+ENVIRONMENT=production
+PREVIEW_DATA_LIMIT=15
+PORT=8000
+```
+
+### Deployment Steps
+
+1. **Prepare the Repository**:
+   ```bash
+   git add .
+   git commit -m "Prepare for Databricks Apps deployment"
+   git push origin main
+   ```
+
+2. **Deploy to Databricks Apps**:
+   - Connect your Git repository to Databricks Apps
+   - Configure environment variables through the Databricks UI
+   - Deploy the application
+
+3. **Verify Deployment**:
+   - Check `/api/health` endpoint for system status
+   - Verify database connectivity at `/api/database/test`
+   - Access the marketplace interface at the root URL
+
+### Features Optimized for Databricks Apps
+
+- **Static File Serving**: Built frontend served directly by FastAPI
+- **Database Integration**: PostgreSQL with OAuth credential generation
+- **Databricks SQL Warehouse**: Live data preview integration
+- **Environment Flexibility**: Supports both development and production configs
+- **Health Monitoring**: Comprehensive health checks and diagnostics
+
 ### Environment Configuration
 
 #### Production Environment Variables
@@ -365,6 +466,108 @@ cd server && ./venv/bin/python -m pytest
 # API testing
 curl http://localhost:8000/api/health
 ```
+
+---
+
+## 🔥 Databricks Apps Deployment
+
+This application is optimized for seamless deployment with **Databricks Apps**. The project structure follows Databricks Apps requirements for combined Node.js/Python applications.
+
+### Deployment Overview
+
+Databricks Apps automatically detects and builds both frontend and backend components:
+
+1. **Dependency Installation**: `npm install` (installs all frontend build dependencies)
+2. **Python Dependencies**: `pip install -r requirements.txt` (installs backend dependencies)
+3. **Frontend Build**: `npm run build` (builds React app to `/dist`)
+4. **Application Start**: Runs command specified in `app.yaml`
+
+### Project Structure for Databricks Apps
+
+```
+databricks-marketplace-demo/
+├── package.json              # Node.js dependencies (all in dependencies, not devDependencies)
+├── requirements.txt           # Python dependencies
+├── vite.config.ts            # Frontend build configuration
+├── tailwind.config.js        # Tailwind CSS configuration
+├── tsconfig.json             # TypeScript configuration
+├── app.yaml                  # Databricks Apps deployment config
+├── dist/                     # Built frontend (generated)
+├── client/                   # React frontend source
+└── server/                   # FastAPI backend source
+```
+
+### Key Configuration Files
+
+#### app.yaml
+```yaml
+command: 
+  - "gunicorn"
+  - "server.app.main:app"
+  - "--bind"
+  - "0.0.0.0:8000"
+  - "--worker-class"
+  - "uvicorn.workers.UvicornWorker"
+env:
+  - name: "PGINSTANCE_NAME"
+    valueFrom: "lakebase-db"
+  - name: "DATABRICKS_CLIENT_ID"
+    valueFrom: "databricks-oauth"
+  - name: "DATABRICKS_CLIENT_SECRET"
+    valueFrom: "databricks-oauth"
+```
+
+#### Environment Variables for Production
+
+Set these in your Databricks Apps deployment:
+
+```bash
+# Database Configuration
+PGDATABASE=marketplace
+PGHOST=instance-xyz.database.cloud.databricks.com
+PGPORT=5432
+PGSSLMODE=require
+PGUSER=your-username
+PGINSTANCE_NAME=instance-xyz  # Required for OAuth credential generation
+
+# Databricks Configuration
+DATABRICKS_HOST=your-workspace.cloud.databricks.com
+DATABRICKS_WAREHOUSE_ID=your-warehouse-id
+DATABRICKS_CLIENT_ID=your-client-id
+DATABRICKS_CLIENT_SECRET=your-client-secret
+
+# Application Settings
+ENVIRONMENT=production
+PREVIEW_DATA_LIMIT=15
+PORT=8000
+```
+
+### Deployment Steps
+
+1. **Prepare the Repository**:
+   ```bash
+   git add .
+   git commit -m "Prepare for Databricks Apps deployment"
+   git push origin main
+   ```
+
+2. **Deploy to Databricks Apps**:
+   - Connect your Git repository to Databricks Apps
+   - Configure environment variables through the Databricks UI
+   - Deploy the application
+
+3. **Verify Deployment**:
+   - Check `/api/health` endpoint for system status
+   - Verify database connectivity at `/api/database/test`
+   - Access the marketplace interface at the root URL
+
+### Features Optimized for Databricks Apps
+
+- **Static File Serving**: Built frontend served directly by FastAPI
+- **Database Integration**: PostgreSQL with OAuth credential generation
+- **Databricks SQL Warehouse**: Live data preview integration
+- **Environment Flexibility**: Supports both development and production configs
+- **Health Monitoring**: Comprehensive health checks and diagnostics
 
 ---
 

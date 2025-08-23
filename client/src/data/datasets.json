@@ -1,9 +1,9 @@
 [
   {
     "id": "1", 
-    "title": "FactSet US Equity Fundamentals & Pricing",
-    "description": "Premium equity research dataset providing comprehensive fundamental analysis for over 6,000 US publicly traded companies. Features point-in-time and restated historical financials including detailed income statements, balance sheets, cash flow statements, and ratios spanning 30+ years. Real-time pricing data with millisecond precision from all major US exchanges including NASDAQ, NYSE, and AMEX. Includes corporate actions, dividend history, split-adjusted pricing, and institutional-grade analytics for quantitative research, portfolio construction, and risk management.",
-    "provider": { "id": "1001", "name": "FactSet", "verified": true },
+    "title": "Databricks AI-Enhanced US Equity Intelligence",
+    "description": "Premium equity research dataset providing comprehensive fundamental analysis for over 6,000 US publicly traded companies, enhanced with Databricks' proprietary AI analytics. Features point-in-time and restated historical financials including detailed income statements, balance sheets, cash flow statements, and ratios spanning 30+ years. Real-time pricing data with millisecond precision from all major US exchanges including NASDAQ, NYSE, and AMEX. Includes corporate actions, dividend history, split-adjusted pricing, and institutional-grade analytics for quantitative research, portfolio construction, and risk management.",
+    "provider": { "id": "1021", "name": "Databricks Financial Intelligence", "verified": true },
     "category": "MARKET_TRADING", 
     "subCategory": "Equity Prices",
     "frequency": "REAL_TIME", 
@@ -27,9 +27,9 @@
   },
   {
     "id": "2", 
-    "title": "S&P Global Capital IQ Pro Equity Data",
-    "description": "Institutional-grade equity intelligence covering over 135,000 global public companies across 80+ countries. Features standardized financials with 10+ years of history, real-time pricing from 300+ exchanges, analyst estimates and recommendations from 3,000+ contributors, and detailed ownership data tracking institutional holdings. Includes comprehensive screening tools, peer analysis, and ESG metrics integrated with fundamental data. Powered by S&P's proprietary company intelligence and used by leading investment firms for equity research, due diligence, and portfolio management.",
-    "provider": { "id": "1002", "name": "S&P Global Market Intelligence", "verified": true },
+    "title": "Databricks Global Equity Intelligence Hub",
+    "description": "Institutional-grade equity intelligence covering over 135,000 global public companies across 80+ countries, powered by Databricks' unified analytics platform. Features standardized financials with 10+ years of history, real-time pricing from 300+ exchanges, analyst estimates and recommendations from 3,000+ contributors, and detailed ownership data tracking institutional holdings. Includes comprehensive screening tools, peer analysis, and ESG metrics integrated with fundamental data. Leverages Databricks' AI and machine learning capabilities for enhanced insights and predictive analytics.",
+    "provider": { "id": "1021", "name": "Databricks Financial Intelligence", "verified": true },
     "category": "MARKET_TRADING", 
     "subCategory": "Equity Prices",
     "frequency": "REAL_TIME", 
@@ -105,9 +105,9 @@
   },
   {
     "id": "5", 
-    "title": "Refinitiv Fixed Income & Bond Data",
-    "description": "Comprehensive fixed income universe covering 50+ million bonds across government, corporate, municipal, and agency securities from 180+ countries. Features real-time and historical pricing, yield curves for 40+ sovereigns, credit spreads, duration and convexity metrics, and analytics for over $100 trillion in outstanding debt. Includes detailed issuer information, ratings from all major agencies, and complex instrument structures. Essential for fixed income portfolio management, risk assessment, regulatory reporting, and investment research with institutional-grade data quality and global coverage.",
-    "provider": { "id": "1005", "name": "LSEG (Refinitiv)", "verified": true },
+    "title": "Databricks Fixed Income Analytics Platform",
+    "description": "Comprehensive fixed income universe covering 50+ million bonds across government, corporate, municipal, and agency securities from 180+ countries, enhanced with Databricks' advanced analytics capabilities. Features real-time and historical pricing, yield curves for 40+ sovereigns, credit spreads, duration and convexity metrics, and analytics for over $100 trillion in outstanding debt. Includes detailed issuer information, ratings from all major agencies, and complex instrument structures. Enhanced with Databricks' machine learning models for yield prediction and risk assessment.",
+    "provider": { "id": "1021", "name": "Databricks Financial Intelligence", "verified": true },
     "category": "MARKET_TRADING", 
     "subCategory": "Fixed Income",
     "frequency": "DAILY", 
